@@ -7,32 +7,61 @@ using namespace CustomUI::UnityEngine;
 using namespace CustomUI::UnityEngine::UI;
 using namespace CustomUI::TMPro;
 
+Canvas* canvas;
+
 MAKE_HOOK_OFFSETLESS(SceneManager_SetActiveScene, bool, int scene)
 {
     bool returnVal = SceneManager_SetActiveScene(scene);
     Il2CppString* nameObject;
-    RunMethod(&nameObject, GetClassFromName("UnityEngine.SceneManagement", "Scene"), "GetNameInternal", &scene);
+    RunMethod(&nameObject, GetClassFromName("UnityEngine.SceneManagement", "Scene"), "GetNameInternal", scene);
     const char* name = to_utf8(csstrtostr(nameObject)).c_str();
     log(INFO, "Scene: %s", name);
-    if(strcmp(name, "MenuViewControllers") == 0) {
-        Array<TextMeshProUGUI*>* allTextObjects = (Array<TextMeshProUGUI*>*)Resources::FindObjectsOfTypeAll("TMPro", "TextMeshProUGUI");
-        int textMatch = -1;
-        for (int i = 0; i < allTextObjects->Length(); i++)
+    if(strcmp(name, "MenuViewControllers") == 0 && canvas == nullptr) {
+        canvas = CreateCanvas();
+        RectTransform* rectTransform = (RectTransform*)canvas->get_gameObject()->GetComponent(GetSystemType("UnityEngine", "RectTransform"));
+        rectTransform->set_position({-2.25f, 1.6f, 1.55f});
+        rectTransform->set_localEulerAngles({0.0f, 300.0f});
+        rectTransform->SetSize({120.0f, 80.0f});
+        Image* imageComponent = (Image*)canvas->get_gameObject()->AddComponent(GetSystemType("UnityEngine.UI", "Image"));
+        Array<Sprite*>* allSpriteObjects = (Array<Sprite*>*)Resources::FindObjectsOfTypeAll("UnityEngine", "Sprite");
+        Sprite* spriteMatch = nullptr;
+        for (int i = 0; i < allSpriteObjects->Length(); i++)
         {
-            if (strcmp(allTextObjects->values[i]->get_text().c_str(), "Solo") == 0)
+            if (strcmp(allSpriteObjects->values[i]->get_name().c_str(), "MainScreenMask") == 0)
             {
-                textMatch = i;
+                spriteMatch = allSpriteObjects->values[i];
                 break;
             }
         }
-        if (textMatch == -1)
+        if (spriteMatch == nullptr)
         {
+            log(DEBUG, "Could not find matching Sprite!");
             return returnVal;
         }
-        TextMeshProUGUI* text = CreateTextMeshProUGUI("Hello!", allTextObjects->values[textMatch]->get_transform()->GetParent(), 10.0f);
-        text->get_rectTransform()->set_localPosition({-10.0f, 26.0f, 0.0f});
+        Array<Material*>* allMaterialObjects = (Array<Material*>*)Resources::FindObjectsOfTypeAll("UnityEngine", "Material");
+        Material* materialMatch = nullptr;
+        for (int i = 0; i < allMaterialObjects->Length(); i++)
+        {
+            if (strcmp(allMaterialObjects->values[i]->get_name().c_str(), "UIFogBG") == 0)
+            {
+                materialMatch = allMaterialObjects->values[i];
+                break;
+            }
+        }
+        if (materialMatch == nullptr)
+        {
+            log(DEBUG, "Could not find matching Material!");
+            return returnVal;
+        }
+        imageComponent->set_sprite(spriteMatch);
+        imageComponent->set_material(materialMatch);
+        imageComponent->set_type(Image::Type::Sliced);
+
+        Array<TextMeshProUGUI*>* allTextObjects = (Array<TextMeshProUGUI*>*)Resources::FindObjectsOfTypeAll("TMPro", "TextMeshProUGUI");
+        TextMeshProUGUI* text = CreateTextMeshProUGUI("CustomUI YEET!", canvas->get_transform(), 10.0f);
+        text->get_rectTransform()->set_localPosition({-24.0f, 36.0f, 0.0f});
         //Button* button = CreateButton();
-        //button->get_transform()->SetParent(allTextObjects->values[textMatch]->get_transform(), false);
+        //button->get_transform()->SetParent(canvas->get_transform(), false);
     }
     return returnVal;
 }

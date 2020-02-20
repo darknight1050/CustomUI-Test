@@ -96,6 +96,8 @@
         "strstream": "cpp",
         "unordered_map": "cpp",
         "unordered_set": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp"
     }
 }
