@@ -1,117 +1,164 @@
-#include "../include/main.hpp"
-#include "../extern/beatsaber-hook/shared/customui/customui.hpp"
+#define RAPIDJSON_HAS_STDSTRING 1
 
-using namespace il2cpp_utils;
-using namespace CustomUI;
-using namespace CustomUI::UnityEngine;
-using namespace CustomUI::UnityEngine::UI;
-using namespace CustomUI::TMPro;
+#include "include/main.hpp"
+#include "extern/custom-types/shared/register.hpp"
+#include "extern/custom-types/shared/macros.hpp"
+#include "extern/beatsaber-hook/shared/utils/il2cpp-utils.hpp"
+#include "extern/beatsaber-hook/shared/config/config-utils.hpp"
 
-Canvas* canvas;
+#include "UnityEngine/GameObject.hpp"
+#include "UnityEngine/RectTransform.hpp"
+#include "UnityEngine/SceneManagement/Scene.hpp"
+#include "TMPro/TextMeshProUGUI.hpp"
+#include "GlobalNamespace/MainFlowCoordinator.hpp"
+#include "HMUI/FlowCoordinator_ActivationType.hpp"
+#include "GlobalNamespace/MainMenuViewController.hpp"
+#include "HMUI/ViewController_ActivationType.hpp"
+#include "HMUI/ViewController_DeactivationType.hpp"
+#include "UnityEngine/UI/Button.hpp"
+#include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
 
-MAKE_HOOK_OFFSETLESS(SceneManager_SetActiveScene, bool, int scene)
-{
-    bool returnVal = SceneManager_SetActiveScene(scene);
-    Il2CppString* nameObject;
-    RunMethod(&nameObject, GetClassFromName("UnityEngine.SceneManagement", "Scene"), "GetNameInternal", scene);
-    const char* name = to_utf8(csstrtostr(nameObject)).c_str();
-    log(INFO, "Scene: %s", name);
-    if(strcmp(name, "MenuViewControllers") == 0 && canvas == nullptr) {
-        /*Array<Canvas*>* allCanvasObjects = (Array<Canvas*>*)Resources::FindObjectsOfTypeAll("UnityEngine", "Canvas");
-        for (int i = 0; i < allCanvasObjects->Length(); i++)
-        {
-            Canvas* currentCanvas = allCanvasObjects->values[i];
-            if (strcmp(currentCanvas->get_name().c_str(), "MainScreen") == 0)
-            {
-                
-                Image* imageComponent = (Image*)currentCanvas->get_gameObject()->GetComponent(GetSystemType("UnityEngine.UI", "Image"));
-                log(INFO, "Canvas: %s %s", currentCanvas->get_name().c_str(), imageComponent->get_material()->get_name().c_str());
-                break;
-            }
-            RectTransform* rectTransform = (RectTransform*)currentCanvas->get_gameObject()->GetComponent(GetSystemType("UnityEngine", "RectTransform"));
-            Vector3 position = rectTransform->get_position();
-            Vector3 rotation = rectTransform->get_localEulerAngles();
-            log(INFO, "Position: %f %f %f", position.x, position.y, position.z);
-            log(INFO, "Rotation: %f %f %f", rotation.x, rotation.y, rotation.z);
-            Vector2 sizeDelta = rectTransform->get_sizeDelta();
-            log(INFO, "SizeDelta: %f %f", sizeDelta.x, sizeDelta.y);
-            Array<Component*>* allComponents = currentCanvas->get_gameObject()->GetComponents(GetSystemType("UnityEngine", "Component"));
-            for (int j = 0; j < allComponents->Length(); j++)
-            {
-                Component* currentComponent = allComponents->values[j];
-                log(INFO, "Component: %s %s", il2cpp_functions::class_get_namespace(il2cpp_functions::object_get_class(currentComponent)), il2cpp_functions::class_get_name(il2cpp_functions::object_get_class(currentComponent)));
-            }
-        }*/
-        Array<Button*>* allButtonObjects = (Array<Button*>*)Resources::FindObjectsOfTypeAll("UnityEngine.UI", "Button");
-        for (int i = 0; i < allButtonObjects->Length(); i++)
-        {
-            Button* currentButton = allButtonObjects->values[i];
-            Image* imageComponent = (Image*)currentButton->get_image();
-            if(imageComponent != nullptr){
-                log(INFO, "Button: %s %s %s %s", currentButton->get_name().c_str(), imageComponent->get_name().c_str(), imageComponent->get_sprite()->get_name().c_str(), imageComponent->get_material()->get_name().c_str());
-                Array<Image*>* allImageObjects = (Array<Image*>*)currentButton->get_gameObject()->GetComponentsInChildren(GetSystemType("UnityEngine.UI", "Image"));
-                for (int j = 0; j < allImageObjects->Length(); j++){
-                     log(INFO, "Image: %s %s %s", allImageObjects->values[j]->get_name().c_str(), allImageObjects->values[j]->get_sprite()->get_name().c_str(), allImageObjects->values[j]->get_material()->get_name().c_str());
-                }
-                //RectTransform* rectTransform = (RectTransform*)currentButton->get_transform();
-                //Vector2 sizeDelta = rectTransform->get_sizeDelta();
-                //log(INFO, "SizeDelta: %f %f", sizeDelta.x, sizeDelta.y);
-            }
-        }
-        canvas = CreateCanvas();
-        //Object::DontDestroyOnLoad(canvas);
-        RectTransform* canvasRectTransform = (RectTransform*)canvas->get_transform();
-        canvasRectTransform->set_position({-2.25f, 1.6f, 1.55f});
-        canvasRectTransform->set_localEulerAngles({0.0f, 300.0f});
-        canvasRectTransform->SetSize({120.0f, 80.0f});
-        Image* imageComponent = (Image*)canvas->get_gameObject()->AddComponent(GetSystemType("UnityEngine.UI", "Image"));
-        Array<Sprite*>* allSpriteObjects = (Array<Sprite*>*)Resources::FindObjectsOfTypeAll("UnityEngine", "Sprite");
-        Sprite* spriteMatch = nullptr;
-        for (int i = 0; i < allSpriteObjects->Length(); i++)
-        {
-            if (strcmp(allSpriteObjects->values[i]->get_name().c_str(), "MainScreenMask") == 0)
-            {
-                spriteMatch = allSpriteObjects->values[i];
-                break;
-            }
-        }
-        if (spriteMatch == nullptr)
-        {
-            log(DEBUG, "Could not find matching Sprite!");
-            return returnVal;
-        }
-        Array<Material*>* allMaterialObjects = (Array<Material*>*)Resources::FindObjectsOfTypeAll("UnityEngine", "Material");
-        Material* materialMatch = nullptr;
-        for (int i = 0; i < allMaterialObjects->Length(); i++)
-        {
-            if (strcmp(allMaterialObjects->values[i]->get_name().c_str(), "UIFogBG") == 0)
-            {
-                materialMatch = allMaterialObjects->values[i];
-                break;
-            }
-        }
-        if (materialMatch == nullptr)
-        {
-            log(DEBUG, "Could not find matching Material!");
-            return returnVal;
-        }
-        imageComponent->set_sprite(spriteMatch);
-        imageComponent->set_material(materialMatch);
-        imageComponent->set_type(Image::Type::Sliced);
+#include <chrono>
+#include <map>
+#include <queue>
+#include <thread>
 
-        Array<TextMeshProUGUI*>* allTextObjects = (Array<TextMeshProUGUI*>*)Resources::FindObjectsOfTypeAll("TMPro", "TextMeshProUGUI");
-        TextMeshProUGUI* text = CreateTextMeshProUGUI("CustomUI YEET!", canvasRectTransform, 10.0f);
-        text->get_rectTransform()->set_localPosition({-24.0f, 36.0f, 0.0f});
-        Button* button = CreateButton({23.15f, 8.8f}, canvasRectTransform);
-        Button* uiButton = CreateUIButton(canvasRectTransform, "PlayButton", {0.0f, 0.0f}, {23.15f, 8.8f});
-        
-    }
-    return returnVal;
+static ModInfo modInfo;
+
+const Logger& getLogger() {
+  static const Logger logger(modInfo, LoggerOptions(false, true));
+  return logger;
 }
 
+Configuration& getConfig() {
+    static Configuration overall_config(modInfo);
+    return overall_config;
+}
+
+template<class T = HMUI::ViewController*>
+T CreateViewController() {
+    T viewController = RET_0_UNLESS(il2cpp_utils::New<UnityEngine::GameObject*>(il2cpp_utils::createcsstr("BSMLViewController")))->AddComponent<T>();
+    UnityEngine::Object::DontDestroyOnLoad(viewController->get_gameObject());
+
+    UnityEngine::RectTransform* rectTransform = viewController->get_rectTransform();
+    rectTransform->set_anchorMin(UnityEngine::Vector2(0.0f, 0.0f));
+    rectTransform->set_anchorMax(UnityEngine::Vector2(1.0f, 1.0f));
+    rectTransform->set_sizeDelta(UnityEngine::Vector2(0.0f, 0.0f));
+    rectTransform->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
+    return viewController;
+}
+
+template<class T = HMUI::FlowCoordinator*>
+T CreateFlowCoordinator() {
+    T flowCoordinator = RET_0_UNLESS(il2cpp_utils::New<UnityEngine::GameObject*>(il2cpp_utils::createcsstr("BSMLFlowCoordinator")))->AddComponent<T>();
+    flowCoordinator->baseInputModule = RET_0_UNLESS(UnityEngine::Object::FindObjectOfType<GlobalNamespace::MainFlowCoordinator*>())->baseInputModule;
+    return flowCoordinator;
+}
+
+DECLARE_CLASS_CODEGEN(Il2CppNamespace, TestViewController, HMUI::ViewController,
+
+    DECLARE_METHOD(void, Awake);
+
+    DECLARE_INTERFACE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 2), bool firstActivation, HMUI::ViewController::ActivationType activationType);
+
+    DECLARE_INTERFACE_METHOD(void, DidDeactivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidDeactivate", 1), HMUI::ViewController::DeactivationType deactivationType);
+
+    REGISTER_FUNCTION(TestViewController,
+        getLogger().debug("Registering TestViewController!");
+        REGISTER_METHOD(Awake);
+        REGISTER_METHOD(DidActivate);
+        REGISTER_METHOD(DidDeactivate);
+    )
+)
+
+void Il2CppNamespace::TestViewController::Awake(){
+}
+
+void Il2CppNamespace::TestViewController::DidActivate(bool firstActivation, HMUI::ViewController::ActivationType activationType){
+}
+
+void Il2CppNamespace::TestViewController::DidDeactivate(HMUI::ViewController::DeactivationType deactivationType){
+}
+
+DECLARE_CLASS_CODEGEN(Il2CppNamespace, TestFlowCoordinator, HMUI::FlowCoordinator,
+
+    DECLARE_INSTANCE_FIELD(Il2CppNamespace::TestViewController*, testViewController);
+
+
+    DECLARE_METHOD(void, Awake);
+
+    DECLARE_INTERFACE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "FlowCoordinator", "DidActivate", 2), bool firstActivation, HMUI::FlowCoordinator::ActivationType activationType);
+
+    DECLARE_INTERFACE_METHOD(void, BackButtonWasPressed, il2cpp_utils::FindMethodUnsafe("HMUI", "FlowCoordinator", "BackButtonWasPressed", 1), HMUI::ViewController* topViewController);
+
+    REGISTER_FUNCTION(TestFlowCoordinator,
+        getLogger().debug("Registering TestFlowCoordinator!");
+        REGISTER_FIELD(testViewController);
+
+        REGISTER_METHOD(Awake);
+        REGISTER_METHOD(DidActivate);
+        REGISTER_METHOD(BackButtonWasPressed);
+    )
+)
+
+
+void Il2CppNamespace::TestFlowCoordinator::Awake(){
+    if(!testViewController){
+        testViewController = CreateViewController<Il2CppNamespace::TestViewController*>();
+    }
+}
+
+void Il2CppNamespace::TestFlowCoordinator::DidActivate(bool firstActivation, HMUI::FlowCoordinator::ActivationType activationType){
+    if(firstActivation){
+        set_title(il2cpp_utils::createcsstr("TestFlowCoordinator"));
+        showBackButton = true;
+        ProvideInitialViewControllers(testViewController, nullptr, nullptr, nullptr, nullptr);
+    }
+}
+
+void Il2CppNamespace::TestFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController){
+    RET_V_UNLESS(UnityEngine::Object::FindObjectOfType<GlobalNamespace::MainFlowCoordinator*>())->DismissFlowCoordinator(this, nullptr, false);
+}
+
+HMUI::FlowCoordinator* flowCoordinator = nullptr;
+void OnButtonClick(UnityEngine::UI::Button* button) {
+    getLogger().info("OnButtonClick");
+    if(!flowCoordinator) {
+        flowCoordinator = CreateFlowCoordinator<Il2CppNamespace::TestFlowCoordinator*>();
+    }
+    GlobalNamespace::MainFlowCoordinator* mainFlowCoordinator = RET_V_UNLESS(UnityEngine::Object::FindObjectOfType<GlobalNamespace::MainFlowCoordinator*>());
+    mainFlowCoordinator->PresentFlowCoordinator(flowCoordinator, nullptr, false, false);
+}
+
+MAKE_HOOK_OFFSETLESS(MainFlowCoordinator_DidActivate, void, GlobalNamespace::MainFlowCoordinator* self, bool firstActivation, HMUI::FlowCoordinator::ActivationType activationType) {
+    MainFlowCoordinator_DidActivate(self, firstActivation, activationType);
+}
+TMPro::TextMeshProUGUI* textObject;
+MAKE_HOOK_OFFSETLESS(MainMenuViewController_DidActivate, void, GlobalNamespace::MainMenuViewController* self, bool firstActivation, HMUI::ViewController::ActivationType activationType) {
+    MainMenuViewController_DidActivate(self, firstActivation, activationType);
+    if(firstActivation){
+        UnityEngine::UI::Button* settingsButton = (UnityEngine::UI::Button*)RET_V_UNLESS(il2cpp_utils::GetFieldValue(self, "_settingsButton"));
+        UnityEngine::UI::Button* button = UnityEngine::Object::Instantiate(settingsButton);
+        button->set_name(il2cpp_utils::createcsstr("TestButton"));
+        button->get_transform()->SetParent(settingsButton->get_transform()->GetParent(), false);
+        button->get_onClick()->AddListener(il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction>(il2cpp_functions::class_get_type(il2cpp_utils::GetClassFromName("UnityEngine.Events", "UnityAction")), (Il2CppObject*)nullptr, OnButtonClick));
+        textObject = (TMPro::TextMeshProUGUI*)CRASH_UNLESS(button->get_gameObject()->GetComponentInChildren(il2cpp_utils::GetSystemType("TMPro", "TextMeshProUGUI"), true));
+    }
+    textObject->set_text(il2cpp_utils::createcsstr("TestButton"));
+}
+
+extern "C" void setup(ModInfo& info) 
+{
+    modInfo.id = "CustomUI-Test";
+    modInfo.version = "0.1.0";
+    info = modInfo;
+}
 
 extern "C" void load() {
-    log(INFO, "Installing hooks...");
-    INSTALL_HOOK_OFFSETLESS(SceneManager_SetActiveScene, FindMethod("UnityEngine.SceneManagement", "SceneManager", "SetActiveScene", 1));
-    log(INFO, "Installed all hooks!");
+    getLogger().info("Starting CustomUI-Test installation...");
+    custom_types::Register::RegisterType<Il2CppNamespace::TestViewController>();
+    custom_types::Register::RegisterType<Il2CppNamespace::TestFlowCoordinator>();
+    INSTALL_HOOK_OFFSETLESS(MainFlowCoordinator_DidActivate, il2cpp_utils::FindMethodUnsafe("", "MainFlowCoordinator", "DidActivate", 2));
+    INSTALL_HOOK_OFFSETLESS(MainMenuViewController_DidActivate, il2cpp_utils::FindMethodUnsafe("", "MainMenuViewController", "DidActivate", 2));
+    getLogger().info("Successfully installed CustomUI-Test!");
 }
