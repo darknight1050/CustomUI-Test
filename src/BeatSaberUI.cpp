@@ -76,6 +76,18 @@ namespace BeatSaberUI {
     }
 
     UnityEngine::UI::Button* CreateUIButton(UnityEngine::RectTransform* parent, std::string buttonTemplate, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon){
+        UnityEngine::UI::Button* button = CreateUIButton(parent, buttonTemplate, anchoredPosition, onClick, buttonText, icon);
+        ((UnityEngine::RectTransform*)button->get_transform())->set_sizeDelta(sizeDelta);
+        return button;
+    }
+
+    UnityEngine::UI::Button* CreateUIButton(UnityEngine::RectTransform* parent, std::string buttonTemplate, UnityEngine::Vector2 anchoredPosition, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon){
+        UnityEngine::UI::Button* button = CreateUIButton(parent, buttonTemplate, onClick, buttonText, icon);
+        ((UnityEngine::RectTransform*)button->get_transform())->set_anchoredPosition(anchoredPosition);
+        return button;
+    }
+
+    UnityEngine::UI::Button* CreateUIButton(UnityEngine::RectTransform* parent, std::string buttonTemplate, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon){
         UnityEngine::UI::Button* button = UnityEngine::Object::Instantiate(ArrayUtil::Last(UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::UI::Button*>(), [&buttonTemplate](UnityEngine::UI::Button* x) { return to_utf8(csstrtostr(x->get_name())) == buttonTemplate; }), parent, false);
         button->set_onClick(*il2cpp_utils::New<UnityEngine::UI::Button::ButtonClickedEvent*>());
         if(onClick)
@@ -86,13 +98,10 @@ namespace BeatSaberUI {
         UnityEngine::RectTransform* rectTransform = (UnityEngine::RectTransform*)button->get_transform();
         rectTransform->set_anchorMin(UnityEngine::Vector2(0.5f, 0.5f));
         rectTransform->set_anchorMax(UnityEngine::Vector2(0.5f, 0.5f));
-        rectTransform->set_anchoredPosition(anchoredPosition);
-        rectTransform->set_sizeDelta(sizeDelta);
 
         SetButtonText(button, buttonText);
         if(icon)
             SetButtonIcon(button, icon);
         return button;
     }
-
 }
