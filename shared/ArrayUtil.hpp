@@ -14,5 +14,17 @@ namespace ArrayUtil {
         }
         return nullptr;
     }
+
+    template <class T, class Predicate>
+    inline T* Last(Array<T*>* array, Predicate pred)
+    {
+        for (int i = array->Length()-1; i >= 0; i--) {
+            T* item = array->values[i];
+            if (pred(item)){
+                return item;
+            }
+        }
+        return nullptr;
+    }
     
 }

@@ -31,7 +31,7 @@ MAKE_HOOK_OFFSETLESS(MainMenuViewController_DidActivate, void, GlobalNamespace::
         button = UnityEngine::Object::Instantiate(settingsButton);
         button->set_name(il2cpp_utils::createcsstr("TestButton"));
         button->get_transform()->SetParent(settingsButton->get_transform()->GetParent(), false);
-        button->get_onClick()->AddListener(il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction>(il2cpp_functions::class_get_type(il2cpp_utils::GetClassFromName("UnityEngine.Events", "UnityAction")), (Il2CppObject*)nullptr, OnButtonClick));
+        button->get_onClick()->AddListener(il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction*)), (Il2CppObject*)nullptr, OnButtonClick));
         BeatSaberUI::SetButtonText(button, "TestButton");
     }
 }

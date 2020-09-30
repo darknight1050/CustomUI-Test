@@ -15,6 +15,7 @@
 #include "UnityEngine/SceneManagement/Scene.hpp"
 #include "UnityEngine/UI/Button.hpp"
 #include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
+#include "UnityEngine/Events/UnityAction.hpp"
 #include "HMUI/FlowCoordinator_ActivationType.hpp"
 #include "HMUI/ViewController_ActivationType.hpp"
 #include "HMUI/ViewController_DeactivationType.hpp"

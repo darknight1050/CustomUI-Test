@@ -8,6 +8,7 @@
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/UI/Button.hpp"
+#include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
 #include "UnityEngine/UI/Image.hpp"
 #include "HMUI/ViewController.hpp"
 #include "HMUI/FlowCoordinator.hpp"
@@ -55,4 +56,6 @@ namespace BeatSaberUI {
 
     void SetButtonBackground(UnityEngine::UI::Button* button, UnityEngine::Sprite* background);
 
+    UnityEngine::UI::Button* CreateUIButton(UnityEngine::RectTransform* parent, std::string buttonTemplate, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon);
+    
 }
