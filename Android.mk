@@ -19,8 +19,6 @@ TARGET_ARCH_ABI := $(APP_ABI)
 include $(CLEAR_VARS)
 LOCAL_MODULE := hook
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
-
-# Creating prebuilt for dependency: codegen - version: 0.2.4
 include $(CLEAR_VARS)
 LOCAL_MODULE := codegen_0_2_6
 LOCAL_EXPORT_C_INCLUDES := extern/codegen

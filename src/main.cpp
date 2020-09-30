@@ -3,8 +3,9 @@
 #include "include/main.hpp"
 #include "extern/custom-types/shared/register.hpp"
 #include "extern/custom-types/shared/macros.hpp"
-#include "extern/beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 #include "extern/beatsaber-hook/shared/config/config-utils.hpp"
+
+#include "shared/BeatSaberUI.hpp"
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/RectTransform.hpp"
@@ -35,26 +36,6 @@ Configuration& getConfig() {
     return overall_config;
 }
 
-template<class T = HMUI::ViewController*>
-T CreateViewController() {
-    T viewController = RET_0_UNLESS(il2cpp_utils::New<UnityEngine::GameObject*>(il2cpp_utils::createcsstr("BSMLViewController")))->AddComponent<T>();
-    UnityEngine::Object::DontDestroyOnLoad(viewController->get_gameObject());
-
-    UnityEngine::RectTransform* rectTransform = viewController->get_rectTransform();
-    rectTransform->set_anchorMin(UnityEngine::Vector2(0.0f, 0.0f));
-    rectTransform->set_anchorMax(UnityEngine::Vector2(1.0f, 1.0f));
-    rectTransform->set_sizeDelta(UnityEngine::Vector2(0.0f, 0.0f));
-    rectTransform->set_anchoredPosition(UnityEngine::Vector2(0.0f, 0.0f));
-    return viewController;
-}
-
-template<class T = HMUI::FlowCoordinator*>
-T CreateFlowCoordinator() {
-    T flowCoordinator = RET_0_UNLESS(il2cpp_utils::New<UnityEngine::GameObject*>(il2cpp_utils::createcsstr("BSMLFlowCoordinator")))->AddComponent<T>();
-    flowCoordinator->baseInputModule = RET_0_UNLESS(UnityEngine::Object::FindObjectOfType<GlobalNamespace::MainFlowCoordinator*>())->baseInputModule;
-    return flowCoordinator;
-}
-
 DECLARE_CLASS_CODEGEN(Il2CppNamespace, TestViewController, HMUI::ViewController,
 
     DECLARE_METHOD(void, Awake);
@@ -75,6 +56,9 @@ void Il2CppNamespace::TestViewController::Awake(){
 }
 
 void Il2CppNamespace::TestViewController::DidActivate(bool firstActivation, HMUI::ViewController::ActivationType activationType){
+    if(firstActivation){
+        BeatSaberUI::CreateText(get_rectTransform(), "TestText", UnityEngine::Vector2(0.0f, 0.0f));
+    }
 }
 
 void Il2CppNamespace::TestViewController::DidDeactivate(HMUI::ViewController::DeactivationType deactivationType){
@@ -104,7 +88,7 @@ DECLARE_CLASS_CODEGEN(Il2CppNamespace, TestFlowCoordinator, HMUI::FlowCoordinato
 
 void Il2CppNamespace::TestFlowCoordinator::Awake(){
     if(!testViewController){
-        testViewController = CreateViewController<Il2CppNamespace::TestViewController*>();
+        testViewController = BeatSaberUI::CreateViewController<Il2CppNamespace::TestViewController*>();
     }
 }
 
@@ -117,17 +101,16 @@ void Il2CppNamespace::TestFlowCoordinator::DidActivate(bool firstActivation, HMU
 }
 
 void Il2CppNamespace::TestFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController){
-    RET_V_UNLESS(UnityEngine::Object::FindObjectOfType<GlobalNamespace::MainFlowCoordinator*>())->DismissFlowCoordinator(this, nullptr, false);
+    BeatSaberUI::getMainFlowCoordinator()->DismissFlowCoordinator(this, nullptr, false);
 }
 
 HMUI::FlowCoordinator* flowCoordinator = nullptr;
 void OnButtonClick(UnityEngine::UI::Button* button) {
     getLogger().info("OnButtonClick");
     if(!flowCoordinator) {
-        flowCoordinator = CreateFlowCoordinator<Il2CppNamespace::TestFlowCoordinator*>();
+        flowCoordinator = BeatSaberUI::CreateFlowCoordinator<Il2CppNamespace::TestFlowCoordinator*>();
     }
-    GlobalNamespace::MainFlowCoordinator* mainFlowCoordinator = RET_V_UNLESS(UnityEngine::Object::FindObjectOfType<GlobalNamespace::MainFlowCoordinator*>());
-    mainFlowCoordinator->PresentFlowCoordinator(flowCoordinator, nullptr, false, false);
+    BeatSaberUI::getMainFlowCoordinator()->PresentFlowCoordinator(flowCoordinator, nullptr, false, false);
 }
 
 MAKE_HOOK_OFFSETLESS(MainFlowCoordinator_DidActivate, void, GlobalNamespace::MainFlowCoordinator* self, bool firstActivation, HMUI::FlowCoordinator::ActivationType activationType) {
