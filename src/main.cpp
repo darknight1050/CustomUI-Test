@@ -23,7 +23,7 @@ void OnButtonClick(UnityEngine::UI::Button* button) {
     BeatSaberUI::getMainFlowCoordinator()->PresentFlowCoordinator(flowCoordinator, nullptr, false, false);
 }
 
- UnityEngine::UI::Button* button;
+UnityEngine::UI::Button* button;
 MAKE_HOOK_OFFSETLESS(MainMenuViewController_DidActivate, void, GlobalNamespace::MainMenuViewController* self, bool firstActivation, HMUI::ViewController::ActivationType activationType) {
     MainMenuViewController_DidActivate(self, firstActivation, activationType);
     if(firstActivation){
@@ -44,7 +44,7 @@ extern "C" void setup(ModInfo& info) {
 
 extern "C" void load() {
     getLogger().info("Starting CustomUI-Test installation...");
-    custom_types::Register::RegisterType<CustomUITest::TestViewController>();
+    custom_types::Register::RegisterType<CustomUITest::CookieClickerViewController>();
     custom_types::Register::RegisterType<CustomUITest::TestFlowCoordinator>();
     INSTALL_HOOK_OFFSETLESS(MainMenuViewController_DidActivate, il2cpp_utils::FindMethodUnsafe("", "MainMenuViewController", "DidActivate", 2));
     getLogger().info("Successfully installed CustomUI-Test!");

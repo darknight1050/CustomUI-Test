@@ -30,7 +30,7 @@
     },
     {
       "id": "custom-types",
-      "versionRange": "*",
+      "versionRange": "0.2.2",
       "additionalData": {}
     }
   ],

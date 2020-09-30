@@ -42,9 +42,9 @@ LOCAL_SRC_FILES := extern/libbeatsaber-hook_0_7_1.so
 include $(PREBUILT_SHARED_LIBRARY)
 # Creating prebuilt for dependency: custom-types - version: 0.2.0
 include $(CLEAR_VARS)
-LOCAL_MODULE := custom-types_0_2_1
+LOCAL_MODULE := custom-types_0_2_2
 LOCAL_EXPORT_C_INCLUDES := extern/custom-types
-LOCAL_SRC_FILES := extern/libcustom-types_0_2_1.so
+LOCAL_SRC_FILES := extern/libcustom-types_0_2_2.so
 include $(PREBUILT_SHARED_LIBRARY)
 # Creating prebuilt for dependency: modloader - version: 1.0.2
 include $(CLEAR_VARS)
@@ -64,7 +64,7 @@ LOCAL_SHARED_LIBRARIES += modloader
 LOCAL_SHARED_LIBRARIES += beatsaber-hook_0_7_1
 LOCAL_SHARED_LIBRARIES += codegen_0_2_6
 LOCAL_SHARED_LIBRARIES += bs-utils
-LOCAL_SHARED_LIBRARIES += custom-types_0_2_1
+LOCAL_SHARED_LIBRARIES += custom-types_0_2_2
 LOCAL_LDLIBS += -llog 
 LOCAL_CFLAGS += -I"include" -I"shared" -I"./extern/libil2cpp/il2cpp/libil2cpp" -I"extern" -I"extern/codegen/include"  
 LOCAL_C_INCLUDES += ./include ./src 

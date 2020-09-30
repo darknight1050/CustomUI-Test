@@ -21,5 +21,5 @@
 #include "HMUI/ViewController_DeactivationType.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 
-#include "TestViewController.hpp"
+#include "CookieClickerViewController.hpp"
 #include "TestFlowCoordinator.hpp"

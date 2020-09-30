@@ -3,10 +3,10 @@
 #include "ArrayUtil.hpp"
 
 #include "GlobalNamespace/MainFlowCoordinator.hpp"
-#include "UnityEngine/Resources.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/Sprite.hpp"
 #include "UnityEngine/UI/Button.hpp"
 #include "UnityEngine/UI/Button_ButtonClickedEvent.hpp"
 #include "UnityEngine/UI/Image.hpp"
@@ -14,7 +14,6 @@
 #include "HMUI/FlowCoordinator.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "TMPro/TMP_FontAsset.hpp"
-#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
 
 namespace BeatSaberUI {
 
@@ -24,7 +23,7 @@ namespace BeatSaberUI {
 
     template<class T = HMUI::ViewController*>
     T CreateViewController() {
-        T viewController = RET_0_UNLESS(il2cpp_utils::New<UnityEngine::GameObject*>(il2cpp_utils::createcsstr("BSMLViewController")))->AddComponent<T>();
+        T viewController = UnityEngine::GameObject::New_ctor(il2cpp_utils::createcsstr("BSMLViewController"))->AddComponent<T>();
         UnityEngine::Object::DontDestroyOnLoad(viewController->get_gameObject());
 
         UnityEngine::RectTransform* rectTransform = viewController->get_rectTransform();
@@ -37,14 +36,14 @@ namespace BeatSaberUI {
 
     template<class T = HMUI::FlowCoordinator*>
     T CreateFlowCoordinator() {
-        T flowCoordinator = RET_0_UNLESS(il2cpp_utils::New<UnityEngine::GameObject*>(il2cpp_utils::createcsstr("BSMLFlowCoordinator")))->AddComponent<T>();
+        T flowCoordinator = UnityEngine::GameObject::New_ctor(il2cpp_utils::createcsstr("BSMLFlowCoordinator"))->AddComponent<T>();
         flowCoordinator->baseInputModule = getMainFlowCoordinator()->baseInputModule;
         return flowCoordinator;
     }
 
-    TMPro::TextMeshProUGUI* CreateText(UnityEngine::RectTransform* parent, std::string text, UnityEngine::Vector2 anchoredPosition);
+    TMPro::TextMeshProUGUI* CreateText(UnityEngine::Transform* parent, std::string text, UnityEngine::Vector2 anchoredPosition);
 
-    TMPro::TextMeshProUGUI* CreateText(UnityEngine::RectTransform* parent, std::string text, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta);
+    TMPro::TextMeshProUGUI* CreateText(UnityEngine::Transform* parent, std::string text, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta);
 
     void SetButtonText(UnityEngine::UI::Button* button, std::string text);
 
@@ -56,10 +55,13 @@ namespace BeatSaberUI {
 
     void SetButtonBackground(UnityEngine::UI::Button* button, UnityEngine::Sprite* background);
 
-    UnityEngine::UI::Button* CreateUIButton(UnityEngine::RectTransform* parent, std::string buttonTemplate, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon);
+    UnityEngine::UI::Button* CreateUIButton(UnityEngine::Transform* parent, std::string buttonTemplate, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon);
     
-    UnityEngine::UI::Button* CreateUIButton(UnityEngine::RectTransform* parent, std::string buttonTemplate, UnityEngine::Vector2 anchoredPosition, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon);
+    UnityEngine::UI::Button* CreateUIButton(UnityEngine::Transform* parent, std::string buttonTemplate, UnityEngine::Vector2 anchoredPosition, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon);
     
-    UnityEngine::UI::Button* CreateUIButton(UnityEngine::RectTransform* parent, std::string buttonTemplate, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon);
+    UnityEngine::UI::Button* CreateUIButton(UnityEngine::Transform* parent, std::string buttonTemplate, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon);
     
+    UnityEngine::UI::Image* CreateImage(UnityEngine::Transform* parent, UnityEngine::Sprite* sprite, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta);
+
+    UnityEngine::Sprite* Base64ToSprite(std::string base64, int width, int height);
 }

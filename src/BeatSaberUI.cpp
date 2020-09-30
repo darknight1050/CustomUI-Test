@@ -1,32 +1,45 @@
 #include "BeatSaberUI.hpp"
 
+#include "UnityEngine/Resources.hpp"
+#include "UnityEngine/Rect.hpp"
+#include "UnityEngine/SpriteMeshType.hpp"
+#include "UnityEngine/Texture2D.hpp"
+#include "UnityEngine/TextureFormat.hpp"
+#include "UnityEngine/ImageConversion.hpp"
+#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
+#include "System/Convert.hpp"
+
+using namespace UnityEngine;
+using namespace UnityEngine::UI;
+using namespace TMPro;
+
 namespace BeatSaberUI {
     
     GlobalNamespace::MainFlowCoordinator* getMainFlowCoordinator() {
         static GlobalNamespace::MainFlowCoordinator* mainFlowCoordinator = nullptr;
         if(!mainFlowCoordinator)
-            mainFlowCoordinator = UnityEngine::Object::FindObjectOfType<GlobalNamespace::MainFlowCoordinator*>();
+            mainFlowCoordinator = Object::FindObjectOfType<GlobalNamespace::MainFlowCoordinator*>();
         return mainFlowCoordinator;
     }
 
-    TMPro::TMP_FontAsset* getMainTextFont() {
-        static TMPro::TMP_FontAsset* mainTextFont = nullptr;
+    TMP_FontAsset* getMainTextFont() {
+        static TMP_FontAsset* mainTextFont = nullptr;
         if(!mainTextFont){
-            mainTextFont = ArrayUtil::First(UnityEngine::Resources::FindObjectsOfTypeAll<TMPro::TMP_FontAsset*>(), [](TMPro::TMP_FontAsset* x) { return to_utf8(csstrtostr(x->get_name())) == "Teko-Medium SDF No Glow"; });
+            mainTextFont = ArrayUtil::First(Resources::FindObjectsOfTypeAll<TMP_FontAsset*>(), [](TMP_FontAsset* x) { return to_utf8(csstrtostr(x->get_name())) == "Teko-Medium SDF No Glow"; });
         }
         return mainTextFont;
     }
 
-    TMPro::TextMeshProUGUI* CreateText(UnityEngine::RectTransform* parent, std::string text, UnityEngine::Vector2 anchoredPosition) {
+    TextMeshProUGUI* CreateText(Transform* parent, std::string text, UnityEngine::Vector2 anchoredPosition) {
         return CreateText(parent, text, anchoredPosition, UnityEngine::Vector2(60.0f, 10.0f));
     }
 
-    TMPro::TextMeshProUGUI* CreateText(UnityEngine::RectTransform* parent, std::string text, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta) {
-        UnityEngine::GameObject* gameObj = RET_0_UNLESS(il2cpp_utils::New<UnityEngine::GameObject*>(il2cpp_utils::createcsstr("CustomUIText")));
+    TextMeshProUGUI* CreateText(Transform* parent, std::string text, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta) {
+        GameObject* gameObj = GameObject::New_ctor(il2cpp_utils::createcsstr("CustomUIText"));
         gameObj->SetActive(false);
 
-        TMPro::TextMeshProUGUI* textMesh = gameObj->AddComponent<TMPro::TextMeshProUGUI*>();
-        UnityEngine::RectTransform* rectTransform = textMesh->get_rectTransform();
+        TextMeshProUGUI* textMesh = gameObj->AddComponent<TextMeshProUGUI*>();
+        RectTransform* rectTransform = textMesh->get_rectTransform();
         textMesh->set_font(getMainTextFont());
         rectTransform->SetParent(parent, false);
         textMesh->set_text(il2cpp_utils::createcsstr(text));
@@ -42,60 +55,60 @@ namespace BeatSaberUI {
         return textMesh;
     }
 
-    void SetButtonText(UnityEngine::UI::Button* button, std::string text) {
+    void SetButtonText(Button* button, std::string text) {
         Polyglot::LocalizedTextMeshProUGUI* localizer = button->GetComponentInChildren<Polyglot::LocalizedTextMeshProUGUI*>();
         if (localizer)
-            UnityEngine::Object::Destroy(localizer);
-        TMPro::TextMeshProUGUI* textMesh = button->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
+            Object::Destroy(localizer);
+        TextMeshProUGUI* textMesh = button->GetComponentInChildren<TextMeshProUGUI*>();
         if(textMesh)
             textMesh->set_text(il2cpp_utils::createcsstr(text));
     }
 
-    void SetButtonTextSize(UnityEngine::UI::Button* button, float fontSize) {
-        TMPro::TextMeshProUGUI* textMesh = button->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
+    void SetButtonTextSize(Button* button, float fontSize) {
+        TextMeshProUGUI* textMesh = button->GetComponentInChildren<TextMeshProUGUI*>();
         if(textMesh)
             textMesh->set_fontSize(fontSize);
     }
 
-    void ToggleButtonWordWrapping(UnityEngine::UI::Button* button, bool enableWordWrapping) {
-        TMPro::TextMeshProUGUI* textMesh = button->GetComponentInChildren<TMPro::TextMeshProUGUI*>();
+    void ToggleButtonWordWrapping(Button* button, bool enableWordWrapping) {
+        TextMeshProUGUI* textMesh = button->GetComponentInChildren<TextMeshProUGUI*>();
         if(textMesh)
             textMesh->set_enableWordWrapping(enableWordWrapping);
     }
 
-    void SetButtonIcon(UnityEngine::UI::Button* button, UnityEngine::Sprite* icon) {
-        auto* array = button->GetComponentsInChildren<UnityEngine::UI::Image*>();
+    void SetButtonIcon(Button* button, Sprite* icon) {
+        auto* array = button->GetComponentsInChildren<Image*>();
         if(array->Length() > 1)
-            ArrayUtil::First(array, [](UnityEngine::UI::Image* x) { return to_utf8(csstrtostr(x->get_name())) == "Icon";})->set_sprite(icon);
+            ArrayUtil::First(array, [](Image* x) { return to_utf8(csstrtostr(x->get_name())) == "Icon";})->set_sprite(icon);
     }
 
-    void SetButtonBackground(UnityEngine::UI::Button* button, UnityEngine::Sprite* background) {
-        auto* array = button->GetComponentsInChildren<UnityEngine::UI::Image*>();
+    void SetButtonBackground(Button* button, Sprite* background) {
+        auto* array = button->GetComponentsInChildren<Image*>();
         if(array->Length() > 0)
             array->values[0]->set_sprite(background);
     }
 
-    UnityEngine::UI::Button* CreateUIButton(UnityEngine::RectTransform* parent, std::string buttonTemplate, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon){
-        UnityEngine::UI::Button* button = CreateUIButton(parent, buttonTemplate, anchoredPosition, onClick, buttonText, icon);
-        ((UnityEngine::RectTransform*)button->get_transform())->set_sizeDelta(sizeDelta);
+    Button* CreateUIButton(Transform* parent, std::string buttonTemplate, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta, Events::UnityAction* onClick, std::string buttonText, Sprite* icon){
+        Button* button = CreateUIButton(parent, buttonTemplate, anchoredPosition, onClick, buttonText, icon);
+        ((RectTransform*)button->get_transform())->set_sizeDelta(sizeDelta);
         return button;
     }
 
-    UnityEngine::UI::Button* CreateUIButton(UnityEngine::RectTransform* parent, std::string buttonTemplate, UnityEngine::Vector2 anchoredPosition, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon){
-        UnityEngine::UI::Button* button = CreateUIButton(parent, buttonTemplate, onClick, buttonText, icon);
-        ((UnityEngine::RectTransform*)button->get_transform())->set_anchoredPosition(anchoredPosition);
+    Button* CreateUIButton(Transform* parent, std::string buttonTemplate, UnityEngine::Vector2 anchoredPosition, Events::UnityAction* onClick, std::string buttonText, Sprite* icon){
+        Button* button = CreateUIButton(parent, buttonTemplate, onClick, buttonText, icon);
+        ((RectTransform*)button->get_transform())->set_anchoredPosition(anchoredPosition);
         return button;
     }
 
-    UnityEngine::UI::Button* CreateUIButton(UnityEngine::RectTransform* parent, std::string buttonTemplate, UnityEngine::Events::UnityAction* onClick, std::string buttonText, UnityEngine::Sprite* icon){
-        UnityEngine::UI::Button* button = UnityEngine::Object::Instantiate(ArrayUtil::Last(UnityEngine::Resources::FindObjectsOfTypeAll<UnityEngine::UI::Button*>(), [&buttonTemplate](UnityEngine::UI::Button* x) { return to_utf8(csstrtostr(x->get_name())) == buttonTemplate; }), parent, false);
-        button->set_onClick(*il2cpp_utils::New<UnityEngine::UI::Button::ButtonClickedEvent*>());
+    Button* CreateUIButton(Transform* parent, std::string buttonTemplate, Events::UnityAction* onClick, std::string buttonText, Sprite* icon){
+        Button* button = Object::Instantiate(ArrayUtil::Last(Resources::FindObjectsOfTypeAll<Button*>(), [&buttonTemplate](Button* x) { return to_utf8(csstrtostr(x->get_name())) == buttonTemplate; }), parent, false);
+        button->set_onClick(Button::ButtonClickedEvent::New_ctor());
         if(onClick)
             button->get_onClick()->AddListener(onClick);
     
         button->set_name(il2cpp_utils::createcsstr("CustomUIButton"));
 
-        UnityEngine::RectTransform* rectTransform = (UnityEngine::RectTransform*)button->get_transform();
+        RectTransform* rectTransform = (RectTransform*)button->get_transform();
         rectTransform->set_anchorMin(UnityEngine::Vector2(0.5f, 0.5f));
         rectTransform->set_anchorMax(UnityEngine::Vector2(0.5f, 0.5f));
 
@@ -104,4 +117,26 @@ namespace BeatSaberUI {
             SetButtonIcon(button, icon);
         return button;
     }
+
+    Image* CreateImage(Transform* parent, Sprite* sprite, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta) {
+        Image* image = UnityEngine::GameObject::New_ctor(il2cpp_utils::createcsstr("CustomImage"))->AddComponent<Image*>();
+        image->get_transform()->SetParent(parent, false);
+        image->set_sprite(sprite);
+        RectTransform* rectTransform = (RectTransform*)image->get_transform();
+        rectTransform->set_anchorMin(UnityEngine::Vector2(0.5f, 0.5f));
+        rectTransform->set_anchorMax(UnityEngine::Vector2(0.5f, 0.5f));
+        rectTransform->set_anchoredPosition(anchoredPosition);
+        rectTransform->set_sizeDelta(sizeDelta);
+        return image;
+    }
+
+    Sprite* Base64ToSprite(std::string base64, int width, int height)
+    {
+        Array<uint8_t>* bytes = System::Convert::FromBase64String(il2cpp_utils::createcsstr(base64));
+        Texture2D* texture = Texture2D::New_ctor(width, height);
+        if(ImageConversion::LoadImage(texture, bytes, false))
+            return Sprite::Create(texture, UnityEngine::Rect(0.0f, 0.0f, (float)width, (float)height), UnityEngine::Vector2(0.5f,0.5f), 1024.0f, 1u, SpriteMeshType::FullRect, UnityEngine::Vector4(0.0f, 0.0f, 0.0f, 0.0f), false);
+        return nullptr;
+    }
+
 }

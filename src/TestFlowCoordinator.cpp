@@ -3,8 +3,8 @@
 #include "BeatSaberUI.hpp"
 
 void CustomUITest::TestFlowCoordinator::Awake(){
-    if(!testViewController){
-        testViewController = BeatSaberUI::CreateViewController<CustomUITest::TestViewController*>();
+    if(!CookieClickerViewController){
+        CookieClickerViewController = BeatSaberUI::CreateViewController<CustomUITest::CookieClickerViewController*>();
     }
 }
 
@@ -12,7 +12,7 @@ void CustomUITest::TestFlowCoordinator::DidActivate(bool firstActivation, HMUI::
     if(firstActivation){
         set_title(il2cpp_utils::createcsstr("TestFlowCoordinator"));
         showBackButton = true;
-        ProvideInitialViewControllers(testViewController, nullptr, nullptr, nullptr, nullptr);
+        ProvideInitialViewControllers(CookieClickerViewController, nullptr, nullptr, nullptr, nullptr);
     }
 }
 
