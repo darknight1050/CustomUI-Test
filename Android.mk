@@ -19,6 +19,8 @@ TARGET_ARCH_ABI := $(APP_ABI)
 include $(CLEAR_VARS)
 LOCAL_MODULE := hook
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
+
+# Creating prebuilt for dependency: codegen - version: 0.2.6
 include $(CLEAR_VARS)
 LOCAL_MODULE := codegen_0_2_6
 LOCAL_EXPORT_C_INCLUDES := extern/codegen
@@ -64,6 +66,6 @@ LOCAL_SHARED_LIBRARIES += codegen_0_2_6
 LOCAL_SHARED_LIBRARIES += bs-utils
 LOCAL_SHARED_LIBRARIES += custom-types_0_2_1
 LOCAL_LDLIBS += -llog 
-LOCAL_CFLAGS += -isystem"./extern/libil2cpp/il2cpp/libil2cpp" -isystem"extern" -I"extern/codegen/include"  
+LOCAL_CFLAGS += -I"include" -I"shared" -I"./extern/libil2cpp/il2cpp/libil2cpp" -I"extern" -I"extern/codegen/include"  
 LOCAL_C_INCLUDES += ./include ./src 
 include $(BUILD_SHARED_LIBRARY)

@@ -1,12 +1,19 @@
+#pragma once
+#include "beatsaber-hook/shared/utils/utils.h"
+#include "ArrayUtil.hpp"
+
 #include "GlobalNamespace/MainFlowCoordinator.hpp"
 #include "UnityEngine/Resources.hpp"
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Vector2.hpp"
+#include "UnityEngine/UI/Button.hpp"
+#include "UnityEngine/UI/Image.hpp"
 #include "HMUI/ViewController.hpp"
 #include "HMUI/FlowCoordinator.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
 #include "TMPro/TMP_FontAsset.hpp"
+#include "Polyglot/LocalizedTextMeshProUGUI.hpp"
 
 namespace BeatSaberUI {
 
@@ -37,5 +44,15 @@ namespace BeatSaberUI {
     TMPro::TextMeshProUGUI* CreateText(UnityEngine::RectTransform* parent, std::string text, UnityEngine::Vector2 anchoredPosition);
 
     TMPro::TextMeshProUGUI* CreateText(UnityEngine::RectTransform* parent, std::string text, UnityEngine::Vector2 anchoredPosition, UnityEngine::Vector2 sizeDelta);
+
+    void SetButtonText(UnityEngine::UI::Button* button, std::string text);
+
+    void SetButtonTextSize(UnityEngine::UI::Button* button, float fontSize);
+
+    void ToggleButtonWordWrapping(UnityEngine::UI::Button* button, bool enableWordWrapping);
+
+    void SetButtonIcon(UnityEngine::UI::Button* button, UnityEngine::Sprite* icon);
+
+    void SetButtonBackground(UnityEngine::UI::Button* button, UnityEngine::Sprite* background);
 
 }
