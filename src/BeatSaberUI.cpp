@@ -133,7 +133,7 @@ namespace BeatSaberUI {
     Sprite* Base64ToSprite(std::string base64, int width, int height)
     {
         Array<uint8_t>* bytes = System::Convert::FromBase64String(il2cpp_utils::createcsstr(base64));
-        Texture2D* texture = Texture2D::New_ctor(width, height);
+        Texture2D* texture = Texture2D::New_ctor(width, height, TextureFormat::RGBA32, false, false);
         if(ImageConversion::LoadImage(texture, bytes, false))
             return Sprite::Create(texture, UnityEngine::Rect(0.0f, 0.0f, (float)width, (float)height), UnityEngine::Vector2(0.5f,0.5f), 1024.0f, 1u, SpriteMeshType::FullRect, UnityEngine::Vector4(0.0f, 0.0f, 0.0f, 0.0f), false);
         return nullptr;
