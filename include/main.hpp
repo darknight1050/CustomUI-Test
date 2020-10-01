@@ -6,7 +6,10 @@
 #include "custom-types/shared/register.hpp"
 
 #include "customlogger.hpp"
-#include "BeatSaberUI.hpp"
+#include "questui/shared/QuestUI.hpp"
+#include "questui/shared/BeatSaberUI.hpp"
+#include "questui/shared/CustomUIKeyboard.hpp"
+#include "questui/shared/KeyboardViewController.hpp"
 
 #include "GlobalNamespace/MainFlowCoordinator.hpp"
 #include "GlobalNamespace/MainMenuViewController.hpp"
@@ -23,5 +26,3 @@
 
 #include "CookieClickerViewController.hpp"
 #include "TestFlowCoordinator.hpp"
-#include "CustomUIKeyboard.hpp"
-#include "KeyboardViewController.hpp"

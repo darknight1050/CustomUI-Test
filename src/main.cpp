@@ -2,6 +2,8 @@
 
 #include "main.hpp"
 
+using namespace QuestUI;
+
 static ModInfo modInfo;
 
 const Logger& getLogger() {
@@ -39,9 +41,10 @@ extern "C" void setup(ModInfo& info) {
 
 extern "C" void load() {
     getLogger().info("Starting CustomUI-Test installation...");
+    QuestUI::Init();
+    custom_types::Register::RegisterType<QuestUI::CustomUIKeyboard>();
+    custom_types::Register::RegisterType<QuestUI::KeyboardViewController>();
     custom_types::Register::RegisterType<CustomUITest::CookieClickerViewController>();
-    custom_types::Register::RegisterType<CustomUITest::CustomUIKeyboard>();
-    custom_types::Register::RegisterType<CustomUITest::KeyboardViewController>();
     custom_types::Register::RegisterType<CustomUITest::TestFlowCoordinator>();
     INSTALL_HOOK_OFFSETLESS(MainMenuViewController_DidActivate, il2cpp_utils::FindMethodUnsafe("", "MainMenuViewController", "DidActivate", 2));
     getLogger().info("Successfully installed CustomUI-Test!");

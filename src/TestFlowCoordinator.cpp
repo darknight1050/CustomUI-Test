@@ -3,16 +3,18 @@
 #include "System/Action.hpp"
 #include "System/Action_1.hpp"
 
-#include "BeatSaberUI.hpp"
+#include "questui/shared/BeatSaberUI.hpp"
 
 #include "customlogger.hpp"
+
+using namespace QuestUI;
 
 void CustomUITest::TestFlowCoordinator::Awake(){
     if(!CookieClickerViewController){
         CookieClickerViewController = BeatSaberUI::CreateViewController<CustomUITest::CookieClickerViewController*>();
     }
     if(!KeyboardViewController){
-        KeyboardViewController = BeatSaberUI::CreateViewController<CustomUITest::KeyboardViewController*>();
+        KeyboardViewController = BeatSaberUI::CreateViewController<QuestUI::KeyboardViewController*>();
     }
 }
 
@@ -37,7 +39,7 @@ void CustomUITest::TestFlowCoordinator::DidActivate(bool firstActivation, HMUI::
         KeyboardViewController->add_confirmPressed(il2cpp_utils::MakeAction<System::Action_1<Il2CppString*>>(il2cpp_functions::class_get_type(classof(System::Action_1<Il2CppString*>*)), this, OnConfirmPressed));
         KeyboardViewController->add_cancelPressed(il2cpp_utils::MakeAction<System::Action>(il2cpp_functions::class_get_type(classof(System::Action*)), this, OnCancelPressed));
         KeyboardViewController->add_textChanged(il2cpp_utils::MakeAction<System::Action_1<Il2CppString*>>(il2cpp_functions::class_get_type(classof(System::Action_1<Il2CppString*>*)), this, OnTextChanged));
-        ProvideInitialViewControllers(CookieClickerViewController, nullptr, nullptr, KeyboardViewController, nullptr);
+        ProvideInitialViewControllers(CookieClickerViewController, nullptr, KeyboardViewController, nullptr, nullptr);
     }
 }
 

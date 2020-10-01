@@ -4,14 +4,14 @@
 #include "HMUI/FlowCoordinator_ActivationType.hpp"
 
 #include "CookieClickerViewController.hpp"
-#include "KeyboardViewController.hpp"
+#include "questui/shared/KeyboardViewController.hpp"
 
 #include "custom-types/shared/macros.hpp"
 
 DECLARE_CLASS_CODEGEN(CustomUITest, TestFlowCoordinator, HMUI::FlowCoordinator,
 
     DECLARE_INSTANCE_FIELD(CustomUITest::CookieClickerViewController*, CookieClickerViewController);
-    DECLARE_INSTANCE_FIELD(CustomUITest::KeyboardViewController*, KeyboardViewController);
+    DECLARE_INSTANCE_FIELD(QuestUI::KeyboardViewController*, KeyboardViewController);
 
 
     DECLARE_METHOD(void, Awake);

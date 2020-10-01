@@ -3,9 +3,11 @@
 #include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/UI/Image.hpp"
 #include "UnityEngine/Events/UnityAction.hpp"
-#include "BeatSaberUI.hpp"
+#include "questui/shared/BeatSaberUI.hpp"
 #include "Base64Sprite.hpp" 
 #include <stdlib.h>
+
+using namespace QuestUI;
 
 UnityEngine::Sprite* cookieSprite;
 TMPro::TextMeshProUGUI* cookiesTextMesh;

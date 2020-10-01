@@ -30,7 +30,12 @@
     },
     {
       "id": "custom-types",
-      "versionRange": "0.2.2",
+      "versionRange": "*",
+      "additionalData": {}
+    },
+    {
+      "id": "questui",
+      "versionRange": "*",
       "additionalData": {}
     }
   ],
