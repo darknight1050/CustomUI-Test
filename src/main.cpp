@@ -9,11 +9,6 @@ const Logger& getLogger() {
   return logger;
 }
 
-Configuration& getConfig() {
-    static Configuration overall_config(modInfo);
-    return overall_config;
-}
-
 HMUI::FlowCoordinator* flowCoordinator = nullptr;
 void OnButtonClick(UnityEngine::UI::Button* button) {
     getLogger().info("OnButtonClick");
@@ -45,6 +40,8 @@ extern "C" void setup(ModInfo& info) {
 extern "C" void load() {
     getLogger().info("Starting CustomUI-Test installation...");
     custom_types::Register::RegisterType<CustomUITest::CookieClickerViewController>();
+    custom_types::Register::RegisterType<CustomUITest::CustomUIKeyboard>();
+    custom_types::Register::RegisterType<CustomUITest::KeyboardViewController>();
     custom_types::Register::RegisterType<CustomUITest::TestFlowCoordinator>();
     INSTALL_HOOK_OFFSETLESS(MainMenuViewController_DidActivate, il2cpp_utils::FindMethodUnsafe("", "MainMenuViewController", "DidActivate", 2));
     getLogger().info("Successfully installed CustomUI-Test!");

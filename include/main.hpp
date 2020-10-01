@@ -3,9 +3,9 @@
 #include <string>
 #include <string_view>
 #include "beatsaber-hook/shared/utils/utils.h"
-#include "beatsaber-hook/shared/config/config-utils.hpp"
 #include "custom-types/shared/register.hpp"
 
+#include "customlogger.hpp"
 #include "BeatSaberUI.hpp"
 
 #include "GlobalNamespace/MainFlowCoordinator.hpp"
@@ -23,3 +23,5 @@
 
 #include "CookieClickerViewController.hpp"
 #include "TestFlowCoordinator.hpp"
+#include "CustomUIKeyboard.hpp"
+#include "KeyboardViewController.hpp"

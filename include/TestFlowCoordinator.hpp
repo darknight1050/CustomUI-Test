@@ -4,12 +4,14 @@
 #include "HMUI/FlowCoordinator_ActivationType.hpp"
 
 #include "CookieClickerViewController.hpp"
+#include "KeyboardViewController.hpp"
 
 #include "custom-types/shared/macros.hpp"
 
 DECLARE_CLASS_CODEGEN(CustomUITest, TestFlowCoordinator, HMUI::FlowCoordinator,
 
     DECLARE_INSTANCE_FIELD(CustomUITest::CookieClickerViewController*, CookieClickerViewController);
+    DECLARE_INSTANCE_FIELD(CustomUITest::KeyboardViewController*, KeyboardViewController);
 
 
     DECLARE_METHOD(void, Awake);
@@ -20,6 +22,7 @@ DECLARE_CLASS_CODEGEN(CustomUITest, TestFlowCoordinator, HMUI::FlowCoordinator,
 
     REGISTER_FUNCTION(TestFlowCoordinator,
         REGISTER_FIELD(CookieClickerViewController);
+        REGISTER_FIELD(KeyboardViewController);
 
         REGISTER_METHOD(Awake);
         REGISTER_METHOD(DidActivate);
