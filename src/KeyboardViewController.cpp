@@ -2,28 +2,14 @@
 
 #include "GlobalNamespace/UIKeyboard.hpp"
 #include "UnityEngine/Resources.hpp"
-#include "System/String.hpp"
-#include "System/Delegate.hpp"
 
 #include "BeatSaberUI.hpp"
 
-void CustomUITest::KeyboardViewController::add_confirmPressed(System::Action_1<Il2CppString*>* action) {
-    confirmPressed = (System::Action_1<Il2CppString*>*)System::Delegate::Combine(confirmPressed, action);
-}
+DEFINE_EVENT(CustomUITest::KeyboardViewController, System::Action_1<Il2CppString*>*, confirmPressed);
 
-void CustomUITest::KeyboardViewController::remove_confirmPressed(System::Action_1<Il2CppString*>* action) {
-    if(confirmPressed)
-        confirmPressed = (System::Action_1<Il2CppString*>*)System::Delegate::Remove(confirmPressed, action);
-}
+DEFINE_EVENT(CustomUITest::KeyboardViewController, System::Action*, cancelPressed);
 
-void CustomUITest::KeyboardViewController::add_cancelPressed(System::Action* action) {
-    cancelPressed = (System::Action*)System::Delegate::Combine(cancelPressed, action);
-}
-
-void CustomUITest::KeyboardViewController::remove_cancelPressed(System::Action* action) {
-    if(cancelPressed)
-        cancelPressed = (System::Action*)System::Delegate::Remove(cancelPressed, action);
-}
+DEFINE_EVENT(CustomUITest::KeyboardViewController, System::Action_1<Il2CppString*>*, textChanged);
 
 void TextKeyWasPressedEvent(CustomUITest::KeyboardViewController* self, char c) {
     self->inputString = il2cpp_utils::createcsstr(to_utf8(csstrtostr(self->inputString)) + std::string({c}));
@@ -49,7 +35,7 @@ void CancelButtonWasPressedEvent(CustomUITest::KeyboardViewController* self) {
 void CustomUITest::KeyboardViewController::DidActivate(bool firstActivation, HMUI::ViewController::ActivationType activationType) {
     inputString = il2cpp_utils::createcsstr("");
     if(activationType == HMUI::ViewController::ActivationType::AddedToHierarchy && firstActivation) {
-        inputText = BeatSaberUI::CreateText(get_rectTransform(), "...", UnityEngine::Vector2(0.0f, 22.0f));
+        inputText = BeatSaberUI::CreateText(get_rectTransform(), "", UnityEngine::Vector2(0.0f, 22.0f));
         inputText->set_alignment(TMPro::TextAlignmentOptions::Center);
         inputText->set_fontSize(6.0f);
         GlobalNamespace::UIKeyboard* kb = ArrayUtil::First(UnityEngine::Resources::FindObjectsOfTypeAll<GlobalNamespace::UIKeyboard*>(), [](GlobalNamespace::UIKeyboard* x) { return to_utf8(csstrtostr(x->get_name())) != "CustomUIKeyboard"; });
@@ -63,9 +49,10 @@ void CustomUITest::KeyboardViewController::DidActivate(bool firstActivation, HMU
         keyboard->add_deleteButtonWasPressedEvent(il2cpp_utils::MakeAction<System::Action>(il2cpp_functions::class_get_type(classof(System::Action*)), this, DeleteButtonWasPressedEvent));
         keyboard->add_okButtonWasPressedEvent(il2cpp_utils::MakeAction<System::Action>(il2cpp_functions::class_get_type(classof(System::Action*)), this, OkButtonWasPressedEvent));
         keyboard->add_cancelButtonWasPressedEvent (il2cpp_utils::MakeAction<System::Action>(il2cpp_functions::class_get_type(classof(System::Action*)), this, CancelButtonWasPressedEvent));
-    }else{
+    } else {
         UpdateInputText();
     }
+    inputText->set_text(il2cpp_utils::createcsstr("..."));
 }
 
 void CustomUITest::KeyboardViewController::UpdateInputText() {
@@ -77,10 +64,13 @@ void CustomUITest::KeyboardViewController::UpdateInputText() {
         else {
             keyboard->set_enableOkButtonInteractivity(true);
         }
+        if(textChanged)
+            textChanged->Invoke(inputString);
     }
 }
 
 void CustomUITest::KeyboardViewController::ClearInputText() {
     inputString = il2cpp_utils::createcsstr("");
+    UpdateInputText();
 }
 

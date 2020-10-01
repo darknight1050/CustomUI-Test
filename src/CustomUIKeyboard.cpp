@@ -83,19 +83,21 @@ void CustomUITest::CustomUIKeyboard::Awake() {
         }
         else if (i == arrayLength - 1)
         {   
-            UnityEngine::Vector2 sizeDelta = rectTransform->get_sizeDelta();
-            sizeDelta.x = 14.0f;
-            rectTransform->set_sizeDelta(sizeDelta);
+            rectTransform->set_sizeDelta(UnityEngine::Vector2(16.0f, 0.0f));
+            rectTransform->set_anchoredPosition(UnityEngine::Vector2(11.0f, 0.0f));
             textMeshProButton->get_button()->get_onClick()->AddListener(il2cpp_utils::MakeAction<Events::UnityAction>(il2cpp_functions::class_get_type(classof(Events::UnityAction*)), this, OnCancelButtonWasPressedEvent));
         }
         else if (i == arrayLength - 2)
-        {
+        {   
+            rectTransform->set_sizeDelta(UnityEngine::Vector2(7.0f, 0.0f));
+            rectTransform->set_anchoredPosition(UnityEngine::Vector2(14.0f, 0.0f));
             okButton = textMeshProButton->get_button();
             okButton->set_interactable(okButtonInteractivity);
             textMeshProButton->get_button()->get_onClick()->AddListener(il2cpp_utils::MakeAction<Events::UnityAction>(il2cpp_functions::class_get_type(classof(Events::UnityAction*)), this, OnOkButtonWasPressedEvent));
         }
         else
         {
+            rectTransform->set_anchoredPosition(UnityEngine::Vector2(10.0f, 0.0f));
             OnTextKeyWasPressedEventData* data = new OnTextKeyWasPressedEventData();
             data->customUIKeyboard = this;
             data->key = ' ';
