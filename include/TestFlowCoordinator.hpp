@@ -4,7 +4,7 @@
 #include "HMUI/FlowCoordinator_ActivationType.hpp"
 
 #include "CookieClickerViewController.hpp"
-#include "questui/shared/KeyboardViewController.hpp"
+#include "questui/shared/CustomTypes/ViewControllers/KeyboardViewController.hpp"
 
 #include "custom-types/shared/macros.hpp"
 

@@ -7,30 +7,8 @@ using namespace QuestUI;
 static ModInfo modInfo;
 
 const Logger& getLogger() {
-  static const Logger logger(modInfo, LoggerOptions(false, true));
-  return logger;
-}
-
-HMUI::FlowCoordinator* flowCoordinator = nullptr;
-void OnButtonClick(UnityEngine::UI::Button* button) {
-    getLogger().info("OnButtonClick");
-    if(!flowCoordinator) {
-        flowCoordinator = BeatSaberUI::CreateFlowCoordinator<CustomUITest::TestFlowCoordinator*>();
-    }
-    BeatSaberUI::getMainFlowCoordinator()->PresentFlowCoordinator(flowCoordinator, nullptr, false, false);
-}
-
-UnityEngine::UI::Button* button;
-MAKE_HOOK_OFFSETLESS(MainMenuViewController_DidActivate, void, GlobalNamespace::MainMenuViewController* self, bool firstActivation, HMUI::ViewController::ActivationType activationType) {
-    MainMenuViewController_DidActivate(self, firstActivation, activationType);
-    if(firstActivation){
-        UnityEngine::UI::Button* settingsButton = (UnityEngine::UI::Button*)RET_V_UNLESS(il2cpp_utils::GetFieldValue(self, "_settingsButton"));
-        button = UnityEngine::Object::Instantiate(settingsButton);
-        button->set_name(il2cpp_utils::createcsstr("TestButton"));
-        button->get_transform()->SetParent(settingsButton->get_transform()->GetParent(), false);
-        button->get_onClick()->AddListener(il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction*)), (Il2CppObject*)nullptr, OnButtonClick));
-        BeatSaberUI::SetButtonText(button, "TestButton");
-    }
+    static const Logger logger(modInfo, LoggerOptions(false, true));
+    return logger;
 }
 
 extern "C" void setup(ModInfo& info) {
@@ -42,10 +20,9 @@ extern "C" void setup(ModInfo& info) {
 extern "C" void load() {
     getLogger().info("Starting CustomUI-Test installation...");
     QuestUI::Init();
-    custom_types::Register::RegisterType<QuestUI::CustomUIKeyboard>();
-    custom_types::Register::RegisterType<QuestUI::KeyboardViewController>();
     custom_types::Register::RegisterType<CustomUITest::CookieClickerViewController>();
     custom_types::Register::RegisterType<CustomUITest::TestFlowCoordinator>();
-    INSTALL_HOOK_OFFSETLESS(MainMenuViewController_DidActivate, il2cpp_utils::FindMethodUnsafe("", "MainMenuViewController", "DidActivate", 2));
+    QuestUI::Register::RegisterModSettingsFlowCoordinator<CustomUITest::TestFlowCoordinator*>(modInfo);
+    QuestUI::Register::RegisterModSettingsViewController<CustomUITest::CookieClickerViewController*>(ModInfo{"TestMod", "0.0.1"}, "TestModSettings");
     getLogger().info("Successfully installed CustomUI-Test!");
 }

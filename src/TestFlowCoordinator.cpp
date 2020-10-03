@@ -4,18 +4,19 @@
 #include "System/Action_1.hpp"
 
 #include "questui/shared/BeatSaberUI.hpp"
+#include "questui/shared/QuestUI.hpp"
 
 #include "customlogger.hpp"
 
 using namespace QuestUI;
 
+DEFINE_CLASS(CustomUITest::TestFlowCoordinator);
+
 void CustomUITest::TestFlowCoordinator::Awake(){
-    if(!CookieClickerViewController){
+    if(!CookieClickerViewController)
         CookieClickerViewController = BeatSaberUI::CreateViewController<CustomUITest::CookieClickerViewController*>();
-    }
-    if(!KeyboardViewController){
+    if(!KeyboardViewController)
         KeyboardViewController = BeatSaberUI::CreateViewController<QuestUI::KeyboardViewController*>();
-    }
 }
 
 void OnTextChanged(CustomUITest::TestFlowCoordinator* self, Il2CppString* text) {
@@ -24,12 +25,12 @@ void OnTextChanged(CustomUITest::TestFlowCoordinator* self, Il2CppString* text) 
 
 void OnConfirmPressed(CustomUITest::TestFlowCoordinator* self, Il2CppString* text) {
     getLogger().info("Final text: " + to_utf8(csstrtostr(text)));
-    BeatSaberUI::getMainFlowCoordinator()->DismissFlowCoordinator(self, nullptr, false);
+    QuestUI::getModSettingsFlowCoordinator()->DismissFlowCoordinator(self, nullptr, false);
 }
 
 void OnCancelPressed(CustomUITest::TestFlowCoordinator* self) {
     getLogger().info("Canceled");
-    BeatSaberUI::getMainFlowCoordinator()->DismissFlowCoordinator(self, nullptr, false);
+    QuestUI::getModSettingsFlowCoordinator()->DismissFlowCoordinator(self, nullptr, false);
 }
 
 void CustomUITest::TestFlowCoordinator::DidActivate(bool firstActivation, HMUI::FlowCoordinator::ActivationType activationType){
@@ -44,5 +45,5 @@ void CustomUITest::TestFlowCoordinator::DidActivate(bool firstActivation, HMUI::
 }
 
 void CustomUITest::TestFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController){
-    BeatSaberUI::getMainFlowCoordinator()->DismissFlowCoordinator(this, nullptr, false);
+    QuestUI::getModSettingsFlowCoordinator()->DismissFlowCoordinator(this, nullptr, false);
 }
