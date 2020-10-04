@@ -2,7 +2,9 @@
 
 #include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/UI/Image.hpp"
+#include "UnityEngine/UI/Toggle_ToggleEvent.hpp"
 #include "UnityEngine/Events/UnityAction.hpp"
+#include "UnityEngine/Events/UnityAction_1.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
 #include "Base64Sprite.hpp" 
 #include <stdlib.h>
@@ -28,6 +30,9 @@ void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation
         cookieSprite = nullptr;
         cookies = 0;
         BeatSaberUI::CreateUIButton(get_rectTransform(), "OkButton", UnityEngine::Vector2(0.0f, -2.0f), UnityEngine::Vector2(28.0f, 10.0f), il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction*)), this, OnTestButtonClick), "Cookie", nullptr);
+        UnityEngine::GameObject* toggle = BeatSaberUI::CreateToggle(get_rectTransform(), "Toggle", il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction_1<bool>>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction_1<bool>*)), this, +[](CustomUITest::CookieClickerViewController* viewController, bool toggle) { getLogger().info("toggle %d", toggle); }));
+        BeatSaberUI::AddHoverHint(toggle, "HoverHint");
+        BeatSaberUI::CreateIncrementSetting(get_rectTransform(), UnityEngine::Vector2(60.0f, -16.0f), "IncrementSetting", 2, 0.5f, 10.0f);
     }
 }
 
