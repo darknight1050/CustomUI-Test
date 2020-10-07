@@ -8,8 +8,6 @@
 #include "customlogger.hpp"
 #include "questui/shared/QuestUI.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
-#include "questui/shared/CustomTypes/Components/CustomUIKeyboard.hpp"
-#include "questui/shared/CustomTypes/Components/ViewControllers/KeyboardViewController.hpp"
 
 #include "GlobalNamespace/MainFlowCoordinator.hpp"
 #include "GlobalNamespace/MainMenuViewController.hpp"
