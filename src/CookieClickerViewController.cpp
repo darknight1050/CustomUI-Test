@@ -11,6 +11,7 @@
 
 #include "questui/shared/BeatSaberUI.hpp"
 #include "questui/shared/CustomTypes/Components/ExternalComponents.hpp"
+#include "questui/shared/CustomTypes/Components/KeyboardController.hpp"
 #include "Base64Sprite.hpp" 
 #include <stdlib.h>
 
@@ -60,8 +61,9 @@ void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation
 
         auto* scrollView = container->GetComponent<QuestUI::ExternalComponents*>()->Get<HMUI::ScrollView*>();
         getLogger().info("contentHeight %f", scrollView->contentHeight);*/
-
-        BeatSaberUI::CreateKeyboard(get_rectTransform())->GetComponent<QuestUI::ExternalComponents*>()->Get<UnityEngine::RectTransform*>()->get_gameObject()->SetActive(true);
+        BeatSaberUI::CreateIncrementSetting(get_rectTransform(), UnityEngine::Vector2(60.0f, -16.0f), "IncrementSetting", 2, 0.5f, 10.0f, il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction_1<float>>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction_1<float>*)), this, +[](CustomUITest::CookieClickerViewController* self, float value) { getLogger().info("New Float: %f", value); }));
+        BeatSaberUI::CreateStringSetting(get_rectTransform(), UnityEngine::Vector2(60.0f, -26.0f), "Test1", "Hello1", il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction_1<Il2CppString*>>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction_1<Il2CppString*>*)), this, +[](CustomUITest::CookieClickerViewController* self, Il2CppString* value) { getLogger().info("New Text1: %s", to_utf8(csstrtostr(value)).c_str()); }));
+        BeatSaberUI::CreateStringSetting(get_rectTransform(), UnityEngine::Vector2(60.0f, -36.0f), "Test2", "Hello2", il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction_1<Il2CppString*>>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction_1<Il2CppString*>*)), this, +[](CustomUITest::CookieClickerViewController* self, Il2CppString* value) { getLogger().info("New Text2: %s", to_utf8(csstrtostr(value)).c_str()); }));
     }
 }
 
