@@ -1,17 +1,20 @@
 #include "CookieClickerViewController.hpp"
 
+#include "UnityEngine/RectOffset.hpp"
 #include "UnityEngine/RectTransform.hpp"
 #include "UnityEngine/Vector2.hpp"
 #include "UnityEngine/UI/Image.hpp"
+#include "UnityEngine/UI/Toggle.hpp"
 #include "UnityEngine/UI/Toggle_ToggleEvent.hpp"
 #include "UnityEngine/UI/LayoutRebuilder.hpp"
 #include "UnityEngine/Events/UnityAction.hpp"
 #include "UnityEngine/Events/UnityAction_1.hpp"
 #include "HMUI/ScrollView.hpp"
+#include "HMUI/ModalView.hpp"
 
 #include "questui/shared/BeatSaberUI.hpp"
 #include "questui/shared/CustomTypes/Components/ExternalComponents.hpp"
-#include "questui/shared/CustomTypes/Components/KeyboardController.hpp"
+#include "questui/shared/CustomTypes/Components/Backgroundable.hpp"
 #include "Base64Sprite.hpp" 
 #include <stdlib.h>
 
@@ -21,52 +24,50 @@
 #include <string>
 
 using namespace QuestUI;
+using namespace UnityEngine;
+using namespace UnityEngine::UI;
+using namespace UnityEngine::Events;
+using namespace HMUI;
 
 DEFINE_CLASS(CustomUITest::CookieClickerViewController);
 
-void OnTestButtonClick(CustomUITest::CookieClickerViewController* viewController, UnityEngine::UI::Button* button) {
+void OnTestButtonClick(CustomUITest::CookieClickerViewController* viewController, Button* button) {
     if(!viewController->cookieSprite)
         viewController->cookieSprite = BeatSaberUI::Base64ToSprite(base64Sprite, 620, 620);
     viewController->cookiesTextMesh->set_text(il2cpp_utils::createcsstr("Cookies: " + std::to_string(++viewController->cookies)));
-    UnityEngine::UI::Image* image = BeatSaberUI::CreateImage(viewController->get_rectTransform(), viewController->cookieSprite, UnityEngine::Vector2(rand()%(68*2)-68, rand()%(32*2)-32), UnityEngine::Vector2(8.0f, 8.0f));
-    UnityEngine::Object::Destroy(image->get_gameObject(), 4);
+    Image* image = BeatSaberUI::CreateImage(viewController->get_rectTransform(), viewController->cookieSprite, UnityEngine::Vector2(rand()%(68*2)-68, rand()%(32*2)-32), UnityEngine::Vector2(8.0f, 8.0f));
+    Object::Destroy(image->get_gameObject(), 4);
 }
-
-void test(UnityEngine::GameObject* obj, int index) {
-
-    getLogger().info("%d %s%s (%d)", index, std::string(index*2, '-').c_str(), to_utf8(csstrtostr(obj->get_name())).c_str(), obj->get_transform()->get_childCount());
-    for(int i = 0;i<obj->get_transform()->get_childCount(); i++) {
-        UnityEngine::Transform* transform = obj->get_transform()->GetChild(i);
-        test(transform->get_gameObject(), index+1);
-    }
-}
-
-void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation, HMUI::ViewController::ActivationType activationType){
-    if(activationType == HMUI::ViewController::ActivationType::AddedToHierarchy && firstActivation) {
-        /*BeatSaberUI::CreateText(get_rectTransform(), "CookieClicker", UnityEngine::Vector2(12.0f, 32.0f))->set_fontSize(8.0f);
-        cookiesTextMesh = BeatSaberUI::CreateText(get_rectTransform(), "Cookies: 0", UnityEngine::Vector2(19.0f, 6.0f));
-        cookiesTextMesh->set_fontSize(6.0f);
-        cookieSprite = nullptr;
-        cookies = 0;
-        BeatSaberUI::CreateUIButton(get_rectTransform(), "OkButton", UnityEngine::Vector2(0.0f, -2.0f), UnityEngine::Vector2(28.0f, 10.0f), il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction*)), this, OnTestButtonClick), "Cookie", nullptr);
-        */
-        //UnityEngine::GameObject* toggle = BeatSaberUI::CreateToggle(get_rectTransform(), "Toggle", il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction_1<bool>>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction_1<bool>*)), this, +[](CustomUITest::CookieClickerViewController* viewController, bool toggle) { getLogger().info("toggle %d", toggle); }));
-        //BeatSaberUI::AddHoverHint(toggle, "HoverHint");
-        //BeatSaberUI::CreateIncrementSetting(get_rectTransform(), UnityEngine::Vector2(60.0f, -16.0f), "IncrementSetting", 2, 0.5f, 10.0f);
-
+void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling){
+    if(firstActivation) {
         /*UnityEngine::GameObject* container = BeatSaberUI::CreateScrollView(get_transform());
-        auto button = BeatSaberUI::CreateUIButton(container->get_transform(), "OkButton", il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction*)), this, OnTestButtonClick), "Cookie", nullptr);
+        auto button = BeatSaberUI::CreateUIButton(container->get_transform(), "OkButton", il2cpp_utils::MakeAction<UnityAction>(il2cpp_functions::class_get_type(classof(UnityAction*)), this, OnTestButtonClick), "Cookie", nullptr);
         auto inc = BeatSaberUI::CreateIncrementSetting(container->get_transform(), "IncrementSetting", 2, 0.5f, 10.0f);
         //test(this->get_gameObject(), 0);
 
         auto* scrollView = container->GetComponent<QuestUI::ExternalComponents*>()->Get<HMUI::ScrollView*>();
         getLogger().info("contentHeight %f", scrollView->contentHeight);*/
-        BeatSaberUI::CreateIncrementSetting(get_rectTransform(), UnityEngine::Vector2(60.0f, -16.0f), "IncrementSetting", 2, 0.5f, 10.0f, il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction_1<float>>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction_1<float>*)), this, +[](CustomUITest::CookieClickerViewController* self, float value) { getLogger().info("New Float: %f", value); }));
-        BeatSaberUI::CreateStringSetting(get_rectTransform(), UnityEngine::Vector2(60.0f, -26.0f), "Test1", "Hello1", il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction_1<Il2CppString*>>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction_1<Il2CppString*>*)), this, +[](CustomUITest::CookieClickerViewController* self, Il2CppString* value) { getLogger().info("New Text1: %s", to_utf8(csstrtostr(value)).c_str()); }));
-        BeatSaberUI::CreateStringSetting(get_rectTransform(), UnityEngine::Vector2(60.0f, -36.0f), "Test2", "Hello2", il2cpp_utils::MakeAction<UnityEngine::Events::UnityAction_1<Il2CppString*>>(il2cpp_functions::class_get_type(classof(UnityEngine::Events::UnityAction_1<Il2CppString*>*)), this, +[](CustomUITest::CookieClickerViewController* self, Il2CppString* value) { getLogger().info("New Text2: %s", to_utf8(csstrtostr(value)).c_str()); }));
+        BeatSaberUI::CreateText(get_rectTransform(), "CookieClicker", UnityEngine::Vector2(12.0f, 32.0f))->set_fontSize(8.0f);
+
+        VerticalLayoutGroup* layout = BeatSaberUI::CreateVerticalLayoutGroup(get_rectTransform());
+		layout->set_spacing(3.5f);
+		layout->get_gameObject()->AddComponent<Backgroundable*>()->ApplyBackground(il2cpp_utils::createcsstr("round-rect-panel"));
+        layout->get_gameObject()->GetComponent<ContentSizeFitter*>()->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
+		layout->set_padding(UnityEngine::RectOffset::New_ctor(3, 3, 2, 2));
+
+
+        cookiesTextMesh = BeatSaberUI::CreateText(layout->get_transform(), "Cookies: 0", UnityEngine::Vector2(19.0f, 6.0f));
+        cookiesTextMesh->set_fontSize(6.0f);
+        cookieSprite = nullptr;
+        cookies = 0;
+        Button* cookieButton = BeatSaberUI::CreateUIButton(layout->get_transform(), "Cookie", il2cpp_utils::MakeAction<UnityAction>(il2cpp_functions::class_get_type(classof(UnityAction*)), this, OnTestButtonClick));
+        BeatSaberUI::AddHoverHint(cookieButton->get_gameObject(), "Get a cookie");
+        BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "TestIncrementSetting", 2, 0.5f, 10.0f, il2cpp_utils::MakeAction<UnityAction_1<float>>(il2cpp_functions::class_get_type(classof(UnityAction_1<float>*)), this, +[](CookieClickerViewController* view, float value) { getLogger().info("questui TestIncrementSetting: %f", value); }));
+        BeatSaberUI::CreateToggle(layout->get_transform(), "TestToggle", il2cpp_utils::MakeAction<UnityAction_1<bool>>(il2cpp_functions::class_get_type(classof(UnityAction_1<bool>*)), this, +[](CookieClickerViewController* view, bool value) { getLogger().info("questui TestToggle: %d", value);  }));
+        BeatSaberUI::CreateStringSetting(layout->get_transform(), "TestStringSetting", "", il2cpp_utils::MakeAction<UnityAction_1<Il2CppString*>>(il2cpp_functions::class_get_type(classof(UnityAction_1<Il2CppString*>*)), this, +[](CustomUITest::CookieClickerViewController* self, Il2CppString* value) { getLogger().info("questui TestStringSetting: %s", to_utf8(csstrtostr(value)).c_str()); }));
     }
 }
 
-void CustomUITest::CookieClickerViewController::DidDeactivate(HMUI::ViewController::DeactivationType deactivationType) {
+void CustomUITest::CookieClickerViewController::DidDeactivate(bool removedFromHierarchy, bool screenSystemDisabling) {
     cookieSprite = nullptr;
 }

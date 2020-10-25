@@ -2,6 +2,8 @@
 
 #include "System/Action.hpp"
 #include "System/Action_1.hpp"
+#include "HMUI/ViewController_AnimationDirection.hpp"
+#include "HMUI/ViewController_AnimationType.hpp"
 
 #include "questui/shared/BeatSaberUI.hpp"
 #include "questui/shared/QuestUI.hpp"
@@ -17,14 +19,14 @@ void CustomUITest::TestFlowCoordinator::Awake(){
         CookieClickerViewController = BeatSaberUI::CreateViewController<CustomUITest::CookieClickerViewController*>();
 }
 
-void CustomUITest::TestFlowCoordinator::DidActivate(bool firstActivation, HMUI::FlowCoordinator::ActivationType activationType){
+void CustomUITest::TestFlowCoordinator::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling){
     if(firstActivation){
-        set_title(il2cpp_utils::createcsstr("TestFlowCoordinator"));
+        SetTitle(il2cpp_utils::createcsstr("TestFlowCoordinator"), HMUI::ViewController::AnimationType::In);
         showBackButton = true;
         ProvideInitialViewControllers(CookieClickerViewController, nullptr, nullptr, nullptr, nullptr);
     }
 }
 
 void CustomUITest::TestFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController){
-    QuestUI::getModSettingsFlowCoordinator()->DismissFlowCoordinator(this, nullptr, false);
+    QuestUI::getModSettingsFlowCoordinator()->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
 }
