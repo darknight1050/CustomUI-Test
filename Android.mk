@@ -49,12 +49,6 @@ LOCAL_MODULE := codegen_0_3_4
 LOCAL_EXPORT_C_INCLUDES := extern/codegen
 LOCAL_SRC_FILES := extern/libcodegen_0_3_4.so
 include $(PREBUILT_SHARED_LIBRARY)
-# Creating prebuilt for dependency: bs-utils - version: 0.4.8
-include $(CLEAR_VARS)
-LOCAL_MODULE := bs-utils
-LOCAL_EXPORT_C_INCLUDES := extern/bs-utils
-LOCAL_SRC_FILES := extern/libbs-utils.so
-include $(PREBUILT_SHARED_LIBRARY)
 
 # If you would like to use more shared libraries (such as custom UI, utils, or more) add them here, following the format above. # In addition, ensure that you add them to the shared library build below. 
 include $(CLEAR_VARS) 
@@ -67,7 +61,6 @@ LOCAL_SHARED_LIBRARIES += beatsaber-hook_0_7_8
 LOCAL_SHARED_LIBRARIES += codegen_0_3_4
 LOCAL_SHARED_LIBRARIES += custom-types
 LOCAL_SHARED_LIBRARIES += questui
-LOCAL_SHARED_LIBRARIES += bs-utils
 LOCAL_LDLIBS += -llog 
 LOCAL_CFLAGS += -I"include" -I"shared" -I"./extern/libil2cpp/il2cpp/libil2cpp" -I"extern" -I"extern/codegen/include"
 LOCAL_C_INCLUDES += ./include ./src 
