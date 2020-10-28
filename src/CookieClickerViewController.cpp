@@ -41,7 +41,7 @@ void OnTestButtonClick(CustomUITest::CookieClickerViewController* viewController
 void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling){
     if(firstActivation) {
         /*UnityEngine::GameObject* container = BeatSaberUI::CreateScrollView(get_transform());
-        auto button = BeatSaberUI::CreateUIButton(container->get_transform(), "OkButton", il2cpp_utils::MakeAction<UnityAction>(il2cpp_functions::class_get_type(classof(UnityAction*)), this, OnTestButtonClick), "Cookie", nullptr);
+        auto button = BeatSaberUI::CreateUIButton(container->get_transform(), "OkButton", il2cpp_utils::MakeDelegate<UnityAction*>(classof(UnityAction*), this, OnTestButtonClick), "Cookie", nullptr);
         auto inc = BeatSaberUI::CreateIncrementSetting(container->get_transform(), "IncrementSetting", 2, 0.5f, 10.0f);
         //test(this->get_gameObject(), 0);
 
@@ -60,11 +60,11 @@ void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation
         cookiesTextMesh->set_fontSize(6.0f);
         cookieSprite = nullptr;
         cookies = 0;
-        Button* cookieButton = BeatSaberUI::CreateUIButton(layout->get_transform(), "Cookie", il2cpp_utils::MakeAction<UnityAction>(il2cpp_functions::class_get_type(classof(UnityAction*)), this, OnTestButtonClick));
+        Button* cookieButton = BeatSaberUI::CreateUIButton(layout->get_transform(), "Cookie", il2cpp_utils::MakeDelegate<UnityAction*>(classof(UnityAction*), this, OnTestButtonClick));
         BeatSaberUI::AddHoverHint(cookieButton->get_gameObject(), "Get a cookie");
-        BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "TestIncrementSetting", 2, 0.5f, 10.0f, il2cpp_utils::MakeAction<UnityAction_1<float>>(il2cpp_functions::class_get_type(classof(UnityAction_1<float>*)), this, +[](CookieClickerViewController* view, float value) { getLogger().info("questui TestIncrementSetting: %f", value); }));
-        BeatSaberUI::CreateToggle(layout->get_transform(), "TestToggle", il2cpp_utils::MakeAction<UnityAction_1<bool>>(il2cpp_functions::class_get_type(classof(UnityAction_1<bool>*)), this, +[](CookieClickerViewController* view, bool value) { getLogger().info("questui TestToggle: %d", value);  }));
-        BeatSaberUI::CreateStringSetting(layout->get_transform(), "TestStringSetting", "", il2cpp_utils::MakeAction<UnityAction_1<Il2CppString*>>(il2cpp_functions::class_get_type(classof(UnityAction_1<Il2CppString*>*)), this, +[](CustomUITest::CookieClickerViewController* self, Il2CppString* value) { getLogger().info("questui TestStringSetting: %s", to_utf8(csstrtostr(value)).c_str()); }));
+        BeatSaberUI::CreateIncrementSetting(layout->get_transform(), "TestIncrementSetting", 2, 0.5f, 10.0f, il2cpp_utils::MakeDelegate<UnityAction_1<float>*>(classof(UnityAction_1<float>*), this, +[](CookieClickerViewController* view, float value) { getLogger().info("questui TestIncrementSetting: %f", value); }));
+        BeatSaberUI::CreateToggle(layout->get_transform(), "TestToggle", il2cpp_utils::MakeDelegate<UnityAction_1<bool>*>(classof(UnityAction_1<bool>*), this, +[](CookieClickerViewController* view, bool value) { getLogger().info("questui TestToggle: %d", value);  }));
+        BeatSaberUI::CreateStringSetting(layout->get_transform(), "TestStringSetting", "", il2cpp_utils::MakeDelegate<UnityAction_1<Il2CppString*>*>(classof(UnityAction_1<Il2CppString*>*), this, +[](CustomUITest::CookieClickerViewController* self, Il2CppString* value) { getLogger().info("questui TestStringSetting: %s", to_utf8(csstrtostr(value)).c_str()); }));
     }
 }
 
