@@ -11,6 +11,7 @@
 #include "UnityEngine/Events/UnityAction_1.hpp"
 #include "HMUI/ScrollView.hpp"
 #include "HMUI/ModalView.hpp"
+#include "HMUI/Touchable.hpp"
 
 #include "questui/shared/BeatSaberUI.hpp"
 #include "questui/shared/CustomTypes/Components/ExternalComponents.hpp"
@@ -40,6 +41,7 @@ void OnTestButtonClick(CustomUITest::CookieClickerViewController* viewController
 }
 void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling){
     if(firstActivation) {
+        get_gameObject()->AddComponent<Touchable*>();
         GameObject* container = BeatSaberUI::CreateScrollableSettingsContainer(get_transform());
         cookiesTextMesh = BeatSaberUI::CreateText(container->get_transform(), "Cookies: 0", UnityEngine::Vector2(19.0f, 6.0f));
         cookiesTextMesh->set_fontSize(6.0f);
