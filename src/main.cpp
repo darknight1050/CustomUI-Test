@@ -17,13 +17,18 @@ extern "C" void setup(ModInfo& info) {
     info = modInfo;
 }
 
+void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling){
+    getLogger().info("DidActivate: %p, %d, %d, %d", self, firstActivation, addedToHierarchy, screenSystemEnabling);
+}
+
 extern "C" void load() {
     getLogger().info("Starting CustomUI-Test installation...");
     il2cpp_functions::Init();
     QuestUI::Init();
     custom_types::Register::RegisterType<CustomUITest::CookieClickerViewController>();
     custom_types::Register::RegisterType<CustomUITest::TestFlowCoordinator>();
-    QuestUI::Register::RegisterModSettingsFlowCoordinator<CustomUITest::TestFlowCoordinator*>(modInfo);
+    QuestUI::Register::RegisterModSettingsViewController(modInfo, DidActivate);
+    QuestUI::Register::RegisterModSettingsFlowCoordinator<CustomUITest::TestFlowCoordinator*>(ModInfo{"TestFlowCoordinator", "0.0.1"});
     //#define TestMods
     #ifdef TestMods
     QuestUI::Register::RegisterModSettingsViewController<CustomUITest::CookieClickerViewController*>(ModInfo{"TestMod1", "0.0.1"}, "TestModSettings1");

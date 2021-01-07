@@ -49,7 +49,7 @@ void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation
         cookies = 0;
         Button* cookieButton = BeatSaberUI::CreateUIButton(container->get_transform(), "Cookie", il2cpp_utils::MakeDelegate<UnityAction*>(classof(UnityAction*), this, OnTestButtonClick));
         BeatSaberUI::AddHoverHint(cookieButton->get_gameObject(), "Get a cookie");
-        BeatSaberUI::CreateIncrementSetting(container->get_transform(), "TestIncrementSetting", 2, 0.5f, 10.0f, il2cpp_utils::MakeDelegate<UnityAction_1<float>*>(classof(UnityAction_1<float>*), this, +[](CookieClickerViewController* view, float value) { getLogger().info("questui TestIncrementSetting: %f", value); }));
+        BeatSaberUI::CreateIncrementSetting(container->get_transform(), "TestIncrementSetting", 2, 0.5f, 10.0f, 5.0f, 15.0f, il2cpp_utils::MakeDelegate<UnityAction_1<float>*>(classof(UnityAction_1<float>*), this, +[](CookieClickerViewController* view, float value) { getLogger().info("questui TestIncrementSetting: %f", value); }));
         BeatSaberUI::CreateToggle(container->get_transform(), "TestToggle", il2cpp_utils::MakeDelegate<UnityAction_1<bool>*>(classof(UnityAction_1<bool>*), this, +[](CookieClickerViewController* view, bool value) { getLogger().info("questui TestToggle: %d", value);  }));
         BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", il2cpp_utils::MakeDelegate<UnityAction_1<Il2CppString*>*>(classof(UnityAction_1<Il2CppString*>*), this, +[](CustomUITest::CookieClickerViewController* self, Il2CppString* value) { getLogger().info("questui TestStringSetting: %s", to_utf8(csstrtostr(value)).c_str()); }));
     }
