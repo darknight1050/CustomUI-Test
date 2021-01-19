@@ -6,9 +6,9 @@ using namespace QuestUI;
 
 static ModInfo modInfo;
 
-const Logger& getLogger() {
-    static const Logger logger(modInfo, LoggerOptions(false, false));
-    return logger;
+Logger& getLogger() {
+    static auto logger = new Logger(modInfo, LoggerOptions(false, false));
+    return *logger;
 }
 
 extern "C" void setup(ModInfo& info) {
@@ -25,8 +25,10 @@ extern "C" void load() {
     getLogger().info("Starting CustomUI-Test installation...");
     il2cpp_functions::Init();
     QuestUI::Init();
-    custom_types::Register::RegisterType<CustomUITest::CookieClickerViewController>();
-    custom_types::Register::RegisterType<CustomUITest::TestFlowCoordinator>();
+    custom_types::Register::RegisterTypes<
+        CustomUITest::CookieClickerViewController, 
+        CustomUITest::TestFlowCoordinator
+        >();
     QuestUI::Register::RegisterModSettingsViewController(modInfo, DidActivate);
     QuestUI::Register::RegisterModSettingsFlowCoordinator<CustomUITest::TestFlowCoordinator*>(ModInfo{"TestFlowCoordinator", "0.0.1"});
     //#define TestMods

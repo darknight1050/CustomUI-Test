@@ -28,5 +28,5 @@ void CustomUITest::TestFlowCoordinator::DidActivate(bool firstActivation, bool a
 }
 
 void CustomUITest::TestFlowCoordinator::BackButtonWasPressed(HMUI::ViewController* topViewController){
-    QuestUI::getModSettingsFlowCoordinator()->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
+    this->parentFlowCoordinator->DismissFlowCoordinator(this, HMUI::ViewController::AnimationDirection::Horizontal, nullptr, false);
 }
