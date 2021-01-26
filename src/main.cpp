@@ -1,6 +1,7 @@
 #define RAPIDJSON_HAS_STDSTRING 1
 
 #include "main.hpp"
+#include "ModConfig.hpp"
 
 using namespace QuestUI;
 
@@ -11,10 +12,13 @@ Logger& getLogger() {
     return *logger;
 }
 
+DEFINE_CONFIG(ModConfig);
+
 extern "C" void setup(ModInfo& info) {
     modInfo.id = "CustomUI-Test";
     modInfo.version = "0.1.0";
     info = modInfo;
+    getModConfig().Init(modInfo);
 }
 
 void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling){

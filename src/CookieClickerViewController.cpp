@@ -20,6 +20,7 @@
 #include <stdlib.h>
 
 #include "customlogger.hpp"
+#include "ModConfig.hpp"
 
 #include <sstream>
 #include <string>
@@ -39,6 +40,7 @@ void OnTestButtonClick(CustomUITest::CookieClickerViewController* viewController
     Image* image = BeatSaberUI::CreateImage(viewController->get_rectTransform(), viewController->cookieSprite, UnityEngine::Vector2(rand()%(68*2)-68, rand()%(32*2)-32), UnityEngine::Vector2(8.0f, 8.0f));
     Object::Destroy(image->get_gameObject(), 4);
 }
+
 void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling){
     if(firstActivation) {
         get_gameObject()->AddComponent<Touchable*>();
@@ -52,6 +54,12 @@ void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation
         BeatSaberUI::CreateIncrementSetting(container->get_transform(), "TestIncrementSetting", 2, 0.5f, 10.0f, 5.0f, 15.0f, il2cpp_utils::MakeDelegate<UnityAction_1<float>*>(classof(UnityAction_1<float>*), this, +[](CookieClickerViewController* view, float value) { getLogger().info("questui TestIncrementSetting: %f", value); }));
         BeatSaberUI::CreateToggle(container->get_transform(), "TestToggle", il2cpp_utils::MakeDelegate<UnityAction_1<bool>*>(classof(UnityAction_1<bool>*), this, +[](CookieClickerViewController* view, bool value) { getLogger().info("questui TestToggle: %d", value);  }));
         BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", il2cpp_utils::MakeDelegate<UnityAction_1<Il2CppString*>*>(classof(UnityAction_1<Il2CppString*>*), this, +[](CustomUITest::CookieClickerViewController* self, Il2CppString* value) { getLogger().info("questui TestStringSetting: %s", to_utf8(csstrtostr(value)).c_str()); }));
+        
+        //config-utils macros
+        AddConfigValueToggle(container->get_transform(), getModConfig().ModBool);
+        AddConfigValueIncrementInt(container->get_transform(), getModConfig().ModInt, 2, -1337, 1337);
+        AddConfigValueIncrementFloat(container->get_transform(), getModConfig().ModFloat, 1, 0.5f, 0.0f, 420.0f);
+        AddConfigValueStringSetting(container->get_transform(), getModConfig().ModString);
     }
 }
 

@@ -6,7 +6,7 @@
 		"CustomUI-Test",
 	],
 	"category": "Other",
-	"gameVersion": "1.12.2",
+	"gameVersion": "1.13.2",
 	"version": "0.1.0",
 	"links": {
 		"project-home": "https://github.com/darknight1050/CustomUI-Test"
@@ -21,30 +21,15 @@
 			"UninstallAction": {
 				"RemoveLibraryFile": "libcustomui-test.so"
 			}
-		},
-        {
-            "type": "HookModLibrary",
-            "installAction": {
-              "installLibraryFile": "libcodegen_0_3_5.so"
-            }
-        },
-        {
-            "type": "HookModLibrary",
-            "installAction": {
-              "installLibraryFile": "libbeatsaber-hook_0_8_2.so"
-            }
-        },
-        {
-            "type": "HookModLibrary",
-            "installAction": {
-              "installLibraryFile": "libcustom-types.so"
-            }
-        },
-        {
-            "type": "HookModLibrary",
-            "installAction": {
-              "installLibraryFile": "libquestui.so"
-            }
-        }
+    },
+    {
+			"Type": "HookModLibrary",
+			"InstallAction": {
+				"InstallLibraryFile": "libbeatsaber-hook_1_0_12.so"
+			},
+			"UninstallAction": {
+				"RemoveLibraryFile": "libbeatsaber-hook_1_0_12.so"
+			}
+    }
 	]
 }
