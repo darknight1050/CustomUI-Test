@@ -41,8 +41,8 @@ void TestCanvas() {
     canvas->AddComponent<CurvedCanvasSettings*>()->SetRadius(130);
     RectTransform* transform = canvas->GetComponent<RectTransform*>();
     transform->set_position(UnityEngine::Vector3(0.0f, 0.1f, 2.2f));
+    transform->set_eulerAngles(UnityEngine::Vector3(60.0f, 0.0f, 0.0f));
     VerticalLayoutGroup* layout = BeatSaberUI::CreateVerticalLayoutGroup(transform);
-    layout->get_rectTransform()->set_eulerAngles(UnityEngine::Vector3(60.0f, 0.0f, 0.0f));
     GameObject* layoutGameObject = layout->get_gameObject();
     layoutGameObject->GetComponent<ContentSizeFitter*>()->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
     layoutGameObject->AddComponent<Backgroundable*>()->ApplyBackground(il2cpp_utils::createcsstr("round-rect-panel"));
