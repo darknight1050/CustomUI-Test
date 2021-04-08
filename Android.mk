@@ -61,8 +61,7 @@ LOCAL_SHARED_LIBRARIES += beatsaber-hook_1_2_3
 LOCAL_SHARED_LIBRARIES += codegen_0_7_0
 LOCAL_SHARED_LIBRARIES += custom-types
 LOCAL_SHARED_LIBRARIES += questui
-LOCAL_LDLIBS += -llog 
-LOCAL_CFLAGS += -I"include" -I"shared" -I"./extern/libil2cpp/il2cpp/libil2cpp" -I"extern" -I"extern/codegen/include"
-LOCAL_C_INCLUDES += ./include ./src 
+LOCAL_LDLIBS += -llog
+LOCAL_C_INCLUDES += ./include ./shared ./src ./extern ./extern/libil2cpp/il2cpp/libil2cpp ./extern/codegen/include
 LOCAL_CPP_FEATURES += exceptions
 include $(BUILD_SHARED_LIBRARY)
