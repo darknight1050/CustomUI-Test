@@ -34,7 +34,7 @@ using namespace UnityEngine::Events;
 using namespace HMUI;
 using namespace TMPro;
 
-DEFINE_CLASS(CustomUITest::CookieClickerViewController);
+DEFINE_TYPE(CustomUITest::CookieClickerViewController);
 
 void TestCanvas() {
     GameObject* canvas = BeatSaberUI::CreateCanvas();
@@ -107,6 +107,89 @@ void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation
         AddConfigValueIncrementFloat(container->get_transform(), getModConfig().ModFloat, 1, 0.5f, 0.0f, 420.0f);
         AddConfigValueStringSetting(container->get_transform(), getModConfig().ModString);
         AddConfigValueColorPicker(container->get_transform(), getModConfig().ModColor);
+
+
+        
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
+
+        BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
+            [](std::string value) { 
+                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            });
     }
 }
 

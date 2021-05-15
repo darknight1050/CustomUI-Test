@@ -16,7 +16,7 @@ DECLARE_CLASS_CODEGEN(CustomUITest, CookieClickerViewController, HMUI::ViewContr
 
     DECLARE_OVERRIDE_METHOD(void, DidDeactivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidDeactivate", 2), bool removedFromHierarchy, bool screenSystemDisabling);
 
-    REGISTER_FUNCTION(CookieClickerViewController,
+    REGISTER_FUNCTION(
         REGISTER_FIELD(cookieSprite);
         REGISTER_FIELD(cookiesTextMesh);
         REGISTER_FIELD(cookies);

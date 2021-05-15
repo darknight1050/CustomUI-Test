@@ -33,8 +33,10 @@ extern "C" void load() {
         CustomUITest::CookieClickerViewController, 
         CustomUITest::TestFlowCoordinator
         >();
-    QuestUI::Register::RegisterModSettingsViewController(modInfo, DidActivate);
-    QuestUI::Register::RegisterModSettingsFlowCoordinator<CustomUITest::TestFlowCoordinator*>(ModInfo{"TestFlowCoordinator", "0.0.1"});
+        
+    QuestUI::Register::RegisterModSettingsViewController<CustomUITest::CookieClickerViewController*>(modInfo);
+    //QuestUI::Register::RegisterModSettingsViewController(modInfo, DidActivate);
+    //QuestUI::Register::RegisterModSettingsFlowCoordinator<CustomUITest::TestFlowCoordinator*>(ModInfo{"TestFlowCoordinator", "0.0.1"});
     //#define TestMods
     #ifdef TestMods
     for(int i = 1; i <= 29; i++)

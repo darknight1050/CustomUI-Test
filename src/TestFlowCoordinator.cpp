@@ -12,7 +12,7 @@
 
 using namespace QuestUI;
 
-DEFINE_CLASS(CustomUITest::TestFlowCoordinator);
+DEFINE_TYPE(CustomUITest::TestFlowCoordinator);
 
 void CustomUITest::TestFlowCoordinator::Awake(){
     if(!CookieClickerViewController)

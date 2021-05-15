@@ -4,17 +4,17 @@
 
 DECLARE_CONFIG(ModConfig,
 
-    DECLARE_VALUE(ModBool, bool, "ModConfigBool", true, "Some bool setting");
-    DECLARE_VALUE(ModInt, int, "ModConfignt", 1337, "Some int setting");
-    DECLARE_VALUE(ModFloat, float, "ModConfigFloat", 10.0f, "Some float setting");
-    DECLARE_VALUE(ModString, std::string, "ModConfigString", "hi", "Some string setting");
-    DECLARE_VALUE(ModColor, UnityEngine::Color, "ModConfigColor", UnityEngine::Color(0.0f, 0.0f, 0.0f, 0.0f), "Some color setting");
+    CONFIG_VALUE(ModBool, bool, "ModConfigBool", true, "Some bool setting");
+    CONFIG_VALUE(ModInt, int, "ModConfignt", 1337, "Some int setting");
+    CONFIG_VALUE(ModFloat, float, "ModConfigFloat", 10.0f, "Some float setting");
+    CONFIG_VALUE(ModString, std::string, "ModConfigString", "hi", "Some string setting");
+    CONFIG_VALUE(ModColor, UnityEngine::Color, "ModConfigColor", UnityEngine::Color(0.0f, 0.0f, 0.0f, 0.0f), "Some color setting");
 
-    INIT_FUNCTION(
-        INIT_VALUE(ModBool);
-        INIT_VALUE(ModInt);
-        INIT_VALUE(ModFloat);
-        INIT_VALUE(ModString);
-        INIT_VALUE(ModColor);
+    CONFIG_INIT_FUNCTION(
+        CONFIG_INIT_VALUE(ModBool);
+        CONFIG_INIT_VALUE(ModInt);
+        CONFIG_INIT_VALUE(ModFloat);
+        CONFIG_INIT_VALUE(ModString);
+        CONFIG_INIT_VALUE(ModColor);
     )
 )
