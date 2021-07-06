@@ -34,7 +34,7 @@ using namespace UnityEngine::Events;
 using namespace HMUI;
 using namespace TMPro;
 
-DEFINE_TYPE(CustomUITest::CookieClickerViewController);
+DEFINE_TYPE(CustomUITest, CookieClickerViewController);
 
 void TestCanvas() {
     GameObject* canvas = BeatSaberUI::CreateCanvas();

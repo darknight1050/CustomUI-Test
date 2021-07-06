@@ -29,10 +29,7 @@ extern "C" void load() {
     getLogger().info("Starting CustomUI-Test installation...");
     il2cpp_functions::Init();
     QuestUI::Init();
-    custom_types::Register::RegisterTypes<
-        CustomUITest::CookieClickerViewController, 
-        CustomUITest::TestFlowCoordinator
-        >();
+    custom_types::Register::AutoRegister();
         
     QuestUI::Register::RegisterModSettingsViewController<CustomUITest::CookieClickerViewController*>(modInfo);
     //QuestUI::Register::RegisterModSettingsViewController(modInfo, DidActivate);
