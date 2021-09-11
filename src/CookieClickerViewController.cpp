@@ -91,14 +91,14 @@ void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation
             });
 
         BeatSaberUI::CreateStringSetting(container->get_transform(), "TestStringSetting", "", 
-            [](std::string value) { 
-                getLogger().info("questui TestStringSetting: %s", value.c_str()); 
+            [](std::string_view value) { 
+                getLogger().info("questui TestStringSetting: %s", value.data()); 
             });
         
         std::vector<std::string> values = {"Value 1", "Value 2", "Value 3", "Value 4", "Value 5", "Value 6"};
         BeatSaberUI::CreateDropdown(container->get_transform(), "TestDropdown", values[3], values,  
-            [](std::string value) { 
-                getLogger().info("questui TestDropdown: %s", value.c_str()); 
+            [](std::string_view value) { 
+                getLogger().info("questui TestDropdown: %s", value.data()); 
             });
 
         //config-utils macros
