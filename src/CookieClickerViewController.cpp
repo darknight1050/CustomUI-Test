@@ -45,7 +45,8 @@ void TestCanvas() {
     VerticalLayoutGroup* layout = BeatSaberUI::CreateVerticalLayoutGroup(transform);
     GameObject* layoutGameObject = layout->get_gameObject();
     layoutGameObject->GetComponent<ContentSizeFitter*>()->set_verticalFit(ContentSizeFitter::FitMode::PreferredSize);
-    layoutGameObject->AddComponent<Backgroundable*>()->ApplyBackground(il2cpp_utils::createcsstr("round-rect-panel"));
+    static auto backgroundName = il2cpp_utils::newcsstr("round-rect-panel");
+    layoutGameObject->AddComponent<Backgroundable*>()->ApplyBackground(backgroundName);
     layout->set_padding(UnityEngine::RectOffset::New_ctor(3, 4, 2, 2));
     TextMeshProUGUI* modInfoText = BeatSaberUI::CreateText(layout->get_transform(), "TestText");
     modInfoText->set_alignment(TextAlignmentOptions::Center);
@@ -69,7 +70,7 @@ void CustomUITest::CookieClickerViewController::DidActivate(bool firstActivation
             [this]() {
                 if(!this->cookieSprite)
                     this->cookieSprite = BeatSaberUI::Base64ToSprite(base64Sprite);
-                this->cookiesTextMesh->set_text(il2cpp_utils::createcsstr("Cookies: " + std::to_string(++this->cookies)));
+                this->cookiesTextMesh->set_text(il2cpp_utils::newcsstr("Cookies: " + std::to_string(++this->cookies)));
                 Image* image = BeatSaberUI::CreateImage(this->get_rectTransform(), this->cookieSprite, UnityEngine::Vector2(rand()%(68*2)-68, rand()%(32*2)-32), UnityEngine::Vector2(8.0f, 8.0f));
                 Object::Destroy(image->get_gameObject(), 4);
             });

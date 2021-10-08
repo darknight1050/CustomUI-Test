@@ -21,7 +21,8 @@ void CustomUITest::TestFlowCoordinator::Awake(){
 
 void CustomUITest::TestFlowCoordinator::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling){
     if(firstActivation){
-        SetTitle(il2cpp_utils::createcsstr("TestFlowCoordinator"), HMUI::ViewController::AnimationType::In);
+        static auto titleName = il2cpp_utils::newcsstr("TestFlowCoordinator");
+        SetTitle(titleName, HMUI::ViewController::AnimationType::In);
         showBackButton = true;
         ProvideInitialViewControllers(CookieClickerViewController, nullptr, nullptr, nullptr, nullptr);
     }
